@@ -47,6 +47,12 @@ app.post('/get-uids', async (req, res) => {
     res.json({ uids });
 });
 
+app.post('/', async (req, res) => {
+  console.log(req);
+
+  res.end('ok');
+});
+
 app.post('/check-first', async (req, res) => {
   const {
     firstUids,
