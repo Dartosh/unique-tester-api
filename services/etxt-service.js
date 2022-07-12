@@ -18,7 +18,7 @@ class EtxtAntiPlagiat {
         // путь до веб части проверки
         this.localServer = 'http://63.250.59.172';
         // путь для получения результата
-        this.localUrl = 'http://63.250.59.172/api';
+        this.localUrl = 'http://63.250.59.172/api/';
         // массив объектов на проверку
         this.itemsToCheck = [];
         // типы объектов для проверки
