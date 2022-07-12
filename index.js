@@ -98,7 +98,7 @@ app.post('/check-first', async (req, res) => {
 });
 
 app.get('/testing', async (req, res) => {
-  const test = new EtxtAntiPlagiat(__dirname + 'tasksToCheck', 1);
+  const test = new EtxtAntiPlagiat('tasksToCheck', 1);
 
   setTimeout(() => {
     if (!test.isConnect) {

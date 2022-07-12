@@ -98,7 +98,7 @@ class EtxtAntiPlagiat {
         curlTest.setOpt(Curl.option.POST, 1);
         curlTest.setOpt(
             Curl.option.POSTFIELDS,
-            `xmlUrl=${this.localServer}/${path.basename(this.xmlPath)}&xmlAnswerUrl=${this.localUrl}`
+            `xmlUrl=${this.localServer}/unique-tester/unique-tester-api/${this.xmlPath}&xmlAnswerUrl=${this.localUrl}`
         );
         curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
