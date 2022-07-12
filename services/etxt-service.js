@@ -46,19 +46,12 @@ class EtxtAntiPlagiat {
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
 
         curlTest.on('end', (statusCode, data, headers) => {
+            const dataJson = JSON.parse(data);
             if (statusCode === 200) {
                 this.isConnect = true;
             }
 
-            console.log(`
-                In constructor:
-
-                Status code: ${statusCode};
-                Response: ${data};
-                this.isConnect: ${this.isConnect};
-
-
-            `);
+            console.log(dataJson);
         });
 
         curlTest.perform();
