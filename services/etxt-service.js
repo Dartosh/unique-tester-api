@@ -1,25 +1,40 @@
 const path = require('path');
 const querystring = require("querystring");
 const { Curl } = require("node-libcurl");
-const mcrypt = require
+const fs = require('fs');
 
-const serverType = 'server';
-const localServer = 'http://63.250.59.172';
-const localUrl = 'http://63.250.59.172/api/'
+const secretKey = 'server';
 
 class EtxtAntiPlagiat {
-    constructor() {
+    constructor(fileName, myCrypt) {
+        // путь до сервера
         this.serverUrl = 'http://136.243.95.186:11035/etxt_antiplagiat';
+        // тип сервера по умолчанию
         this.serverType = 'server';
+        // путь до веб части проверки
         this.localServer = 'http://63.250.59.172';
-        this.localUrl = 'http://63.250.59.172/api/index.js';
+        // путь для получения результата
+        this.localUrl = 'http://63.250.59.172/api';
+        // массив объектов на проверку
         this.itemsToCheck = [];
-        this.xmlPath = path.join(__dirname, '..', 'data');
+        // типы объектов для проверки
         this.typesObjects = 'text';
-        this.useCrypt = 'j1YkIs3Mf9QadPwe';
+        // флаг соединения с сервером
         this.isConnect = false;
+        // статус ошибки
         this.error = '';
+        // флаг-значение приоритета пакета
         this.sort = 0;
+
+        if (path) {
+            this.xmlPath = fileName;
+        }
+        
+        this.useCrypt = myCrypt;
+
+        if (this.useCrypt === 1) {
+            this.useCrypt = secretKey;
+        }
 
         const curlTest = new Curl();
 
@@ -128,7 +143,8 @@ class EtxtAntiPlagiat {
 
             const text = el.hasOwnProperty('text') && el.text.length
                 ? `<text>${el.text}</text>`
-                : ``
+                : ``;
+
             return `
             <entry>
                 <id>${el.id}</id>dasf
@@ -138,6 +154,16 @@ class EtxtAntiPlagiat {
             </entry>`
         }).join('')}
         </root>`;
+
+
+
+        fs.writeFile("hello.txt", "Hello мир!", function(error){
+ 
+            if(error) throw error; // если возникла ошибка
+            console.log("Асинхронная запись файла завершена. Содержимое файла:");
+            let data = fs.readFileSync("hello.txt", "utf8");
+            console.log(data);  // выводим считанные данные
+        });
 
         // console.log(str);
 
