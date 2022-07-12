@@ -92,7 +92,7 @@ app.post('/check-first', async (req, res) => {
 });
 
 app.get('/testing', async (req, res) => {
-  const test = new EtxtAntiPlagiat();
+  const test = new EtxtAntiPlagiat(__dirname + 'tasksToCheck', 1);
 
   setTimeout(() => {
     if (!test.isConnect) {
@@ -127,15 +127,17 @@ app.get('/testing', async (req, res) => {
     },
   ]
 
-  // itemsToCheck.forEach((text) => {
-  //   test.addItemToCheck(text);
-  // });
+  itemsToCheck.forEach((text) => {
+    test.addItemToCheck(text);
+  });
 
-  // test.execRequest();
+
+  setTimeout(() => {
+    test.execRequest();
+  }, 4000);
 
   // test.getAbsolutePath();
 
-  test.createXml();
 
   res.json({ isError: false });
 });

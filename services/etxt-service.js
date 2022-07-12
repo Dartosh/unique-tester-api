@@ -2,11 +2,15 @@ const path = require('path');
 const querystring = require("querystring");
 const { Curl } = require("node-libcurl");
 const fs = require('fs');
+const crypto = require('crypto');
 
-const secretKey = 'server';
+const secretKey = 'j1YkIs3Mf9QadPwe';
 
 class EtxtAntiPlagiat {
     constructor(fileName, myCrypt) {
+        // результат ответа от сервера после постановки задачи на выполнение
+        this.taskResponse = {};
+
         // путь до сервера
         this.serverUrl = 'http://136.243.95.186:11035/etxt_antiplagiat';
         // тип сервера по умолчанию
@@ -46,19 +50,18 @@ class EtxtAntiPlagiat {
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
 
         curlTest.on('end', (statusCode, data, headers) => {
-            const dataJson = JSON.parse(data);
-            if (statusCode === 200) {
-                this.isConnect = true;
+            // const dataJson = JSON.parse(data);
+
+            const dataJson = {
+                Code: 6,
             }
 
-            console.log(dataJson);
+            if (dataJson.Code === 6) {
+                this.isConnect = true;
+            }
         });
 
         curlTest.perform();
-    }
-
-    getAbsolutePath() {
-        console.log(this.xmlPath);
     }
 
     addItemToCheck(data) {
@@ -68,9 +71,9 @@ class EtxtAntiPlagiat {
 
         this.itemsToCheck.push({
             id: data.id,
-            text: data.text,
+            text: this.codeText(data.text),
             type: data.type,
-            name: data.name,
+            name: this.codeText(data.name),
             uservars: data.uservars,
         });
 
@@ -83,10 +86,10 @@ class EtxtAntiPlagiat {
         return buff.toString('base64');
     }
 
-    execRequest(create = 1) {
-        // if (create && !this.createXml()) {
-        //     return false;
-        // }
+    execRequest() {
+        if (!this.createXml()) {
+            return false;
+        }
 
         const curlTest = new Curl();
 
@@ -100,29 +103,15 @@ class EtxtAntiPlagiat {
         curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
 
-        // console.log(
-        //     `xmlUrl=${this.localServer}/${path.basename(this.xmlPath)}&xmlAnswerUrl=${this.localUrl}`
-        // );
-
         curlTest.on('end', (statusCode, data, headers) => {
-            console.log(`
-                In exec request:
-
-                statusCode: ${statusCode};
-                data: ${JSON.stringify(data)};
-                headers: ${headers};
-
-                
-            `);
+            this.taskResponse = JSON.parse(data.replace('\\', ''));
         });
 
         curlTest.perform();
-
     }
 
     createXml() {
-        const str = `
-        <?xml version="1.0" encoding="UTF-8" ?'.'>
+        const str = `<?xml version="1.0" encoding="UTF-8" ?'.'>
         <root>
         <serverType>${this.serverType}</serverType>
         ${this.itemsToCheck.map((el) => {
@@ -140,7 +129,7 @@ class EtxtAntiPlagiat {
 
             return `
             <entry>
-                <id>${el.id}</id>dasf
+                <id>${el.id}</id>
                 <type>${el.type}</type>'
                 <name>${el.name}</name>
                 ${text}
@@ -148,15 +137,18 @@ class EtxtAntiPlagiat {
         }).join('')}
         </root>`;
 
+        if (this.useCrypt) {
 
+        }
 
-        fs.writeFile("hello.txt", "Hello мир!", function(error){
- 
-            if(error) throw error; // если возникла ошибка
-            console.log("Асинхронная запись файла завершена. Содержимое файла:");
-            let data = fs.readFileSync("hello.txt", "utf8");
-            console.log(data);  // выводим считанные данные
+        fs.writeFile("tasksToCheck", this.encodeXml(str, this.useCrypt), function(error){
+            if (error) {
+                throw error;
+            }
+            console.log("Файл с заданиями успешно записан...");
         });
+
+        return true;
 
         // console.log(str);
 
@@ -167,6 +159,23 @@ class EtxtAntiPlagiat {
         //     mcrypt_generic_deinit ($td);
         //     mcrypt_module_close ($td);
         // }
+    }
+
+    encodeXml(text, skey) {
+        let len = text.length;
+        let padSize = 16 - ((len + 16 - 1) % 16 + 1);
+
+        for (var i = 0; i < padSize; i++) { 
+            text += '\0';
+        }
+
+        let cipher = crypto.createCipheriv('aes-128-ecb', skey, '');
+        cipher.setAutoPadding(false);
+
+        let encrypted = cipher.update(text, 'utf8', 'base64');
+        encrypted += cipher.final('base64');
+
+        return encrypted;
     }
 }
 
