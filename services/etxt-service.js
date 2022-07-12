@@ -105,6 +105,8 @@ class EtxtAntiPlagiat {
 
         curlTest.on('end', (statusCode, data, headers) => {
             this.taskResponse = JSON.parse(data.replace('\\', ''));
+
+            console.log(this.taskResponse);
         });
 
         curlTest.perform();
