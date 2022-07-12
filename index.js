@@ -95,8 +95,6 @@ app.get('/testing', async (req, res) => {
   const test = new EtxtAntiPlagiat();
 
   setTimeout(() => {
-    // console.log(test.isConnect);
-
     if (!test.isConnect) {
       throw new Error('Failed to connet to the Etext server...');
     }
@@ -129,11 +127,11 @@ app.get('/testing', async (req, res) => {
     },
   ]
 
-  itemsToCheck.forEach((text) => {
-    test.addItemToCheck(text);
-  });
+  // itemsToCheck.forEach((text) => {
+  //   test.addItemToCheck(text);
+  // });
 
-  test.execRequest();
+  // test.execRequest();
 
   // test.getAbsolutePath();
 
