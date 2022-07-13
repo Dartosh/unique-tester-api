@@ -154,13 +154,13 @@ app.get('/testing', async (req, res) => {
   res.json({ isError: false });
 });
 
-app.post('/', async (req, res) => {
+app.post('/upload.php', async (req, res) => {
   console.log(req);
 
   res.send('ok');
 });
 
-app.get('/', async (req, res) => {
+app.get('/upload.php', async (req, res) => {
   console.log(req);
 
   res.send('ok');
