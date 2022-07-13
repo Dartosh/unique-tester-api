@@ -3,26 +3,23 @@ const path = require('path');
 const runner = require('./services/index');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('body-parser-xml')(bodyParser);
 
 const { EtxtAntiPlagiat } = require('./services/etxt-service');
 
 const PORT = 8800;
 const jsonParser = bodyParser.json();
+const xmlParser = bodyParser.xml();
 
 const app = express();
 
 app.use(cors())
 
 app.use(jsonParser);
+app.use(xmlParser);
 
 app.listen(PORT, (req, res) => {
   console.log('Running on port 8800...')
-});
-
-app.post('/xml', async (req, res) => {
-  console.log(req);
-
-  res.end('ok');
 });
 
 app.post('/get-uids', async (req, res) => {
@@ -158,4 +155,16 @@ app.get('/testing', async (req, res) => {
 
 
   res.json({ isError: false });
+});
+
+app.post('/', async (req, res) => {
+  console.log('post');
+
+  res.send('ok');
+});
+
+app.get('/', async (req, res) => {
+  console.log('get');
+
+  res.send('ok');
 });

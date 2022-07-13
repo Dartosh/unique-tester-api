@@ -106,7 +106,7 @@ class EtxtAntiPlagiat {
         curlTest.on('end', (statusCode, data, headers) => {
             this.taskResponse = JSON.parse(data.replace('\\', ''));
 
-            console.log(`xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localUrl}/xml`);
+            console.log(`xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localUrl}`);
 
             console.log(this.taskResponse);
         });
