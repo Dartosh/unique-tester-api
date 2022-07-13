@@ -142,6 +142,10 @@ app.get('/testing', async (req, res) => {
     test.execRequest();
   }, 4000);
 
+  setTimeout(() => {
+    test.execRequest();
+  }, 4000);
+
   // test.getAbsolutePath();
 
 
