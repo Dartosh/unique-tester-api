@@ -158,13 +158,13 @@ app.get('/testing', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
-  console.log('post');
+  console.log(req);
 
   res.send('ok');
 });
 
 app.get('/', async (req, res) => {
-  console.log('get');
+  console.log(req);
 
   res.send('ok');
 });
