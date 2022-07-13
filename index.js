@@ -153,7 +153,7 @@ app.get('/testing', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
-  console.log('Post requested...');
+  console.log(req);
 
   res.end('ok');
 });
