@@ -93,10 +93,9 @@ app.post('/check-first', async (req, res) => {
   res.json({ isError: false });
 });
 
-app.get('/tasks.xml', async (req, res) => {
+app.get('/tasks', async (req, res) => {
   console.log('File requested');
-  res.contentType('application/xml');
-  res.sendFile(path.join(__dirname , 'index.xml'));
+  res.sendFile(path.join(__dirname , 'tasks'));
 });
 
 app.get('/testing', async (req, res) => {
