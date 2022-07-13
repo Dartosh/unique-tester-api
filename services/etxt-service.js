@@ -83,6 +83,8 @@ class EtxtAntiPlagiat {
     codeText(text) {
         const buff = new Buffer(text);
 
+        console.log(buff.toString('base64'));
+
         return buff.toString('base64');
     }
 
