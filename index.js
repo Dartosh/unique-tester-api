@@ -47,12 +47,6 @@ app.post('/get-uids', async (req, res) => {
     res.json({ uids });
 });
 
-app.post('/', async (req, res) => {
-  console.log(req);
-
-  res.end('ok');
-});
-
 app.post('/check-first', async (req, res) => {
   const {
     firstUids,
@@ -98,8 +92,9 @@ app.post('/check-first', async (req, res) => {
 });
 
 app.get('/tasks.xml', async (req, res) => {
+  console.log('File requested');
   res.contentType('application/xml');
-  res.sendFile(path.join(__dirname , 'tasks.xml'));
+  res.sendFile(path.join(__dirname , 'index.xml'));
 });
 
 app.get('/testing', async (req, res) => {
@@ -155,4 +150,10 @@ app.get('/testing', async (req, res) => {
 
 
   res.json({ isError: false });
+});
+
+app.post('/', async (req, res) => {
+  // console.log(req);
+
+  res.end('ok');
 });
