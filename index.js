@@ -19,6 +19,18 @@ app.listen(PORT, (req, res) => {
   console.log('Running on port 8800...')
 });
 
+app.post('/upload', (req, res) => {
+  console.log(req);
+
+  res.send('ok');
+});
+
+app.get('/upload', (req, res) => {
+  console.log(req);
+
+  res.send('ok');
+});
+
 app.post('/get-uids', async (req, res) => {
 
     const {
@@ -151,16 +163,4 @@ app.get('/testing', async (req, res) => {
 
 
   res.json({ isError: false });
-});
-
-app.post('/upload', async (req, res) => {
-  console.log(req);
-
-  res.send('ok');
-});
-
-app.get('/upload', async (req, res) => {
-  console.log(req);
-
-  res.send('ok');
 });
