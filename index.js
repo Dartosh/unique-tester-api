@@ -97,6 +97,11 @@ app.post('/check-first', async (req, res) => {
   res.json({ isError: false });
 });
 
+app.get('/tasks.xml', async (req, res) => {
+  res.contentType('application/xml');
+  res.sendFile(path.join(__dirname , 'tasks.xml'));
+});
+
 app.get('/testing', async (req, res) => {
   const test = new EtxtAntiPlagiat('tasksToCheck', 1);
 
