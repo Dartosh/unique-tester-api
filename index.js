@@ -107,6 +107,7 @@ app.post('/check-first', async (req, res) => {
 
 app.get('/tasks', async (req, res) => {
   console.log('File requested: ' + path.join(__dirname , 'tasks'));
+  res.setHeader('Content-Type', 'text/plain');
   res.sendFile(path.join(__dirname , 'tasks'));
 });
 
