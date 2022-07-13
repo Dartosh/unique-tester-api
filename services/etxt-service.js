@@ -141,9 +141,7 @@ class EtxtAntiPlagiat {
         }).join('')}
         </root>`;
 
-        if (this.useCrypt) {
-
-        }
+        console.log(str);
 
         fs.writeFile(path.join(__dirname, '..', 'tasks'), this.encodeXml(str, this.useCrypt), function(error){
             if (error) {
