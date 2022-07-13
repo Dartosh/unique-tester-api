@@ -143,7 +143,7 @@ class EtxtAntiPlagiat {
 
         }
 
-        fs.writeFile("tasksToCheck", this.encodeXml(str, this.useCrypt), function(error){
+        fs.writeFile(js.join('..', '..', '..', 'var', 'www', 'unique-tester', 'tasks', 'index.xml'), this.encodeXml(str, this.useCrypt), function(error){
             if (error) {
                 throw error;
             }
