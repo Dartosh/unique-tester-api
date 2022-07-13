@@ -19,6 +19,12 @@ app.listen(PORT, (req, res) => {
   console.log('Running on port 8800...')
 });
 
+app.post('/xml', async (req, res) => {
+  console.log(req);
+
+  res.end('ok');
+});
+
 app.post('/get-uids', async (req, res) => {
 
     const {
@@ -152,10 +158,4 @@ app.get('/testing', async (req, res) => {
 
 
   res.json({ isError: false });
-});
-
-app.post('/Xml', async (req, res) => {
-  console.log(req);
-
-  res.end('ok');
 });
