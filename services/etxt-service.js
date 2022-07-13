@@ -100,7 +100,7 @@ class EtxtAntiPlagiat {
         curlTest.setOpt(Curl.option.POST, 1);
         curlTest.setOpt(
             Curl.option.POSTFIELDS,
-            `xmlUrl=${this.localUrl}/tasks&xmlAnswerUrl=${this.localUrl}upload.php`
+            `xmlUrl=${this.localUrl}tasks&xmlAnswerUrl=${this.localUrl}upload.php`
         );
         curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
@@ -108,7 +108,7 @@ class EtxtAntiPlagiat {
         curlTest.on('end', (statusCode, data, headers) => {
             this.taskResponse = JSON.parse(data.replace('\\', ''));
 
-            console.log(`xmlUrl=${this.localUrl}/tasks&xmlAnswerUrl=${this.localUrl}upload.php`);
+            console.log(`xmlUrl=${this.localUrl}tasks&xmlAnswerUrl=${this.localUrl}upload.php`);
 
             console.log(this.taskResponse);
         });
