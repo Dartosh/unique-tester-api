@@ -15,7 +15,9 @@ app.use(cors())
 
 app.use(jsonParser);
 
-app.listen(PORT, (req, res) => console.log('Running on port 8800...'));
+app.listen(PORT, (req, res) => {
+  console.log('Running on port 8800...')
+});
 
 app.post('/get-uids', async (req, res) => {
 
