@@ -143,11 +143,11 @@ class EtxtAntiPlagiat {
 
         }
 
-        fs.writeFile(path.join('..', '..', '..', 'var', 'www', 'tasks', 'index.xml'), this.encodeXml(str, this.useCrypt), function(error){
+        fs.writeFile(path.join(__dirname, '..', '..', '..', 'var', 'www', 'unique-tester', 'tasks', 'index.xml'), this.encodeXml(str, this.useCrypt), function(error){
             if (error) {
                 throw error;
             }
-            console.log(path.join('..', '..', '..', 'var', 'www', 'unique-tester', 'tasks', 'index.xml'));
+            console.log(path.join(__dirname, '..', '..', '..', 'var', 'www', 'unique-tester', 'tasks', 'index.xml'));
         });
 
         return true;
