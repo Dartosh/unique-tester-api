@@ -154,7 +154,7 @@ app.get('/testing', async (req, res) => {
   res.json({ isError: false });
 });
 
-app.post('/', async (req, res) => {
+app.post('/Xml', async (req, res) => {
   console.log(req);
 
   res.end('ok');
