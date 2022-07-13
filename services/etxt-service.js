@@ -102,7 +102,7 @@ class EtxtAntiPlagiat {
             Curl.option.POSTFIELDS,
             `xmlUrl=${this.localUrl}tasks&xmlAnswerUrl=${this.localUrl}upload.php`
         );
-        curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
+        // curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
 
         curlTest.on('end', (statusCode, data, headers) => {
