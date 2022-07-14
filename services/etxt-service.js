@@ -102,12 +102,12 @@ class EtxtAntiPlagiat {
             Curl.option.POSTFIELDS,
             `xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localServer}/upload.php`
         );
-        // curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
+        curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
 
         curlTest.on('end', (statusCode, data, headers) => {
             this.taskResponse = JSON.parse(data.replace('\\', ''));
-            // console.log(this.taskResponse);
+            console.log(this.taskResponse);
         });
 
         curlTest.perform();
@@ -140,7 +140,7 @@ class EtxtAntiPlagiat {
         }).join('')}
         </root>`;
 
-        console.log(str);
+        // console.log(str);
 
         fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
             if (error) {
