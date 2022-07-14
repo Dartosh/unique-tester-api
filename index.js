@@ -19,8 +19,8 @@ app.listen(PORT, (req, res) => {
   console.log('Running on port 8800...')
 });
 
-app.post('/upload', (req, res) => {
-  console.log(req);
+app.post('/etxt-results', (req, res) => {
+  console.log('req');
 
   res.end('ok');
 });
