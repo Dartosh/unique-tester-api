@@ -20,9 +20,9 @@ app.listen(PORT, (req, res) => {
 });
 
 app.post('/upload', (req, res) => {
-  console.log(req);
+  console.log(req.body);
 
-  res.send('ok');
+  res.end('ok');
 });
 
 app.get('/upload', (req, res) => {
