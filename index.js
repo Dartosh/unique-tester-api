@@ -105,12 +105,6 @@ app.post('/check-first', async (req, res) => {
   res.json({ isError: false });
 });
 
-app.get('/tasks', async (req, res) => {
-  console.log('File requested: ' + path.join(__dirname , 'tasks'));
-  res.setHeader('Content-Type', 'text/plain');
-  res.sendFile(path.join(__dirname , 'tasks'));
-});
-
 app.get('/testing', async (req, res) => {
   const test = new EtxtAntiPlagiat('tasksToCheck', 1);
 
@@ -151,10 +145,6 @@ app.get('/testing', async (req, res) => {
     test.addItemToCheck(text);
   });
 
-
-  setTimeout(() => {
-    test.execRequest();
-  }, 4000);
 
   setTimeout(() => {
     test.execRequest();

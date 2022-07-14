@@ -108,9 +108,9 @@ class EtxtAntiPlagiat {
         curlTest.on('end', (statusCode, data, headers) => {
             this.taskResponse = JSON.parse(data.replace('\\', ''));
 
-            console.log(`xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localUrl}upload`);
+            console.log(`xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localServer}/upload.php`);
 
-            console.log(this.taskResponse);
+            // console.log(this.taskResponse);
         });
 
         curlTest.perform();
@@ -145,11 +145,16 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
+            if (error) {
+                throw error;
+            }
+        });
+
         fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encodeXml(str, this.useCrypt), function(error){
             if (error) {
                 throw error;
             }
-            console.log(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'));
         });
 
         return true;
