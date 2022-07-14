@@ -117,7 +117,7 @@ class EtxtAntiPlagiat {
     }
 
     createXml() {
-        const str = `<?xml version="1.0" encoding="UTF-8" ?'.'>
+        const str = `<?xml version="1.0" encoding="UTF-8" ?>
         <root>
         <serverType>${this.serverType}</serverType>
         ${this.itemsToCheck.map((el) => {
@@ -136,7 +136,7 @@ class EtxtAntiPlagiat {
             return `
             <entry>
                 <id>${el.id}</id>
-                <type>${el.type}</type>'
+                <type>${el.type}</type>
                 <name>${el.name}</name>
                 ${text}
             </entry>`
