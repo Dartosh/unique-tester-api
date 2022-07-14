@@ -145,11 +145,11 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFile(path.join(__dirname, '..', 'tasks'), this.encodeXml(str, this.useCrypt), function(error){
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encodeXml(str, this.useCrypt), function(error){
             if (error) {
                 throw error;
             }
-            console.log(path.join(__dirname, '..', 'tasks'));
+            console.log(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'));
         });
 
         return true;
