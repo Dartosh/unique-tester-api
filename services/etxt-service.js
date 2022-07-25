@@ -155,33 +155,31 @@ class EtxtAntiPlagiat {
         });
 
         return true;
-
-        // console.log(str);
-
-        // if (this.useCrypt) {
-        //     const td = mcrypt_module_open (MCRYPT_RIJNDAEL_128, '', MCRYPT_MODE_ECB, '');
-        //     mcrypt_generic_init ($td, $this->useCrypt, $this->useCrypt);
-        //     $string = mcrypt_generic ($td, $string);
-        //     mcrypt_generic_deinit ($td);
-        //     mcrypt_module_close ($td);
-        // }
     }
 
+    // encodeXml(text, skey) {
+    //     let len = text.length;
+    //     let padSize = 16 - ((len + 16 - 1) % 16 + 1);
+
+    //     for (var i = 0; i < padSize; i++) { 
+    //         text += '\0';
+    //     }
+
+    //     let cipher = crypto.createCipheriv('aes-128-ecb', skey, '');
+    //     cipher.setAutoPadding(false);
+
+    //     let encrypted = cipher.update(text, 'utf8', 'base64');
+    //     encrypted += cipher.final('base64');
+
+    //     return encrypted;
+    // }
+
     encodeXml(text, skey) {
-        let len = text.length;
-        let padSize = 16 - ((len + 16 - 1) % 16 + 1);
-
-        for (var i = 0; i < padSize; i++) { 
-            text += '\0';
-        }
-
-        let cipher = crypto.createCipheriv('aes-128-ecb', skey, '');
-        cipher.setAutoPadding(false);
-
-        let encrypted = cipher.update(text, 'utf8', 'base64');
-        encrypted += cipher.final('base64');
-
-        return encrypted;
+        var MCrypt = require('mcrypt').MCrypt;
+        var rijEcb = new MCrypt('rijndael-128', 'ecb');
+        rijEcb.open(skey);
+        var ciphertext = rijEcb.encrypt(text);
+        return ciphertext.toString('base64');
     }
 }
 
