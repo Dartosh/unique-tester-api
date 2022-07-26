@@ -20,7 +20,11 @@ app.listen(PORT, (req, res) => {
 });
 
 app.post('/callback', async (req, res) => {
-  console.log(req);
+  console.log(req.body);
+  console.log(req.query);
+  console.log(req.params);
+
+  res.end('ok');
 });
 
 app.post('/get-uids', async (req, res) => {
