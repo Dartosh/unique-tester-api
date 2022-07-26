@@ -5,6 +5,8 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const secretKey = 'j1YkIs3Mf9QadPwe';
+const algorithm = 'aes-128-ecb';
+const cipher = crypto.createCipher(algorithm, secretKey);
 
 class EtxtAntiPlagiat {
     constructor(fileName, myCrypt) {
@@ -178,9 +180,8 @@ class EtxtAntiPlagiat {
     //     return ciphertext.toString('base64');
     // }
 
-    encryptXml(plainText, key = secretKey, outputEncoding = "base64") {
-        const cipher = crypto.createCipheriv("aes-128-ecb", key, null);
-        return Buffer.concat([cipher.update(plainText), cipher.final()]).toString(outputEncoding);
+    encryptXml(plainText) {    
+        return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
     }
 }
 
