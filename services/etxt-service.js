@@ -181,7 +181,7 @@ class EtxtAntiPlagiat {
     // }
 
     encryptXml(plainText) {    
-        return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
+        return cipher.update(plainText, 'utf-8', 'base64') + cipher.final('base64');
     }
 }
 
