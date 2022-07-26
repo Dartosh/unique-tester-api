@@ -19,6 +19,10 @@ app.listen(PORT, (req, res) => {
   console.log('Running on port 8800...')
 });
 
+app.post('/callback', async (req, res) => {
+  console.log(req);
+});
+
 app.post('/get-uids', async (req, res) => {
 
     const {
