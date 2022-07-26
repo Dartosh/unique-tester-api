@@ -81,11 +81,7 @@ class EtxtAntiPlagiat {
     }
 
     codeText(text) {
-        const buff = new Buffer(text);
-
-        console.log(buff.toString('base64'));
-
-        return buff.toString('base64');
+        return Buffer.from(text).toString('base64');
     }
 
     execRequest() {
@@ -148,7 +144,7 @@ class EtxtAntiPlagiat {
             }
         });
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encodeXml(str, this.useCrypt), function(error){
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
             if (error) {
                 throw error;
             }
@@ -174,12 +170,17 @@ class EtxtAntiPlagiat {
     //     return encrypted;
     // }
 
-    encodeXml(text, skey) {
-        var MCrypt = require('mcrypt').MCrypt;
-        var rijEcb = new MCrypt('rijndael-128', 'ecb');
-        rijEcb.open(skey);
-        var ciphertext = rijEcb.encrypt(text);
-        return ciphertext.toString('base64');
+    // encodeXml(text, skey) {
+    //     var MCrypt = require('mcrypt').MCrypt;
+    //     var rijEcb = new MCrypt('rijndael-128', 'ecb');
+    //     rijEcb.open(skey);
+    //     var ciphertext = rijEcb.encrypt(text);
+    //     return ciphertext.toString('base64');
+    // }
+
+    encryptXml(plainText, key = secretKey, outputEncoding = "base64") {
+        const cipher = crypto.createCipheriv("aes-128-ecb", key, null);
+        return Buffer.concat([cipher.update(plainText), cipher.final()]).toString(outputEncoding);
     }
 }
 
