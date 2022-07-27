@@ -6,7 +6,7 @@ const crypto = require('crypto');
 
 const secretKey = 'j1YkIs3Mf9QadPwe';
 const algorithm = 'aes128';
-// const cipher = crypto.createCipher(algorithm, secretKey);
+const cipher = crypto.createCipher(algorithm, secretKey);
 
 class EtxtAntiPlagiat {
     constructor(fileName, myCrypt) {
@@ -133,17 +133,17 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
-        //     if (error) {
-        //         throw error;
-        //     }
-        // });
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
+            if (error) {
+                throw error;
+            }
+        });
 
-        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
-        //     if (error) {
-        //         throw error;
-        //     }
-        // });
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
+            if (error) {
+                throw error;
+            }
+        });
 
         return true;
     }
@@ -173,9 +173,9 @@ class EtxtAntiPlagiat {
     //     return ciphertext.toString('base64');
     // }
 
-    // encryptXml(plainText) {    
-    //     return cipher.update(plainText, 'utf-8', 'base64') + cipher.final('base64');
-    // }
+    encryptXml(plainText) {    
+        return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
+    }
 }
 
 module.exports = {
