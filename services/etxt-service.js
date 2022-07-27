@@ -148,30 +148,30 @@ class EtxtAntiPlagiat {
         return true;
     }
 
-    encryptXml(text) {
-        let len = text.length;
-        let padSize = 16 - ((len + 16 - 1) % 16 + 1);
+    // encryptXml(text) {
+    //     let len = text.length;
+    //     let padSize = 16 - ((len + 16 - 1) % 16 + 1);
 
-        for (var i = 0; i < padSize; i++) { 
-            text += '\0';
-        }
+    //     for (var i = 0; i < padSize; i++) { 
+    //         text += '\0';
+    //     }
 
-        let cipher = crypto.createCipher('aes-128-ecb', secretKey);
-        cipher.setAutoPadding(false);
+    //     let cipher = crypto.createCipher('aes-128-ecb', secretKey);
+    //     cipher.setAutoPadding(false);
 
-        let encrypted = cipher.update(text, 'utf8', 'base64');
-        encrypted += cipher.final('base64');
+    //     let encrypted = cipher.update(text, 'utf8', 'base64');
+    //     encrypted += cipher.final('base64');
 
-        return encrypted;
-    }
-
-    // encodeXml(text, skey) {
-    //     var MCrypt = require('mcrypt').MCrypt;
-    //     var rijEcb = new MCrypt('rijndael-128', 'ecb');
-    //     rijEcb.open(skey);
-    //     var ciphertext = rijEcb.encrypt(text);
-    //     return ciphertext.toString('base64');
+    //     return encrypted;
     // }
+
+    encryptXml(text) {
+        let MCrypt = require('mcrypt').MCrypt;
+        let rijEcb = new MCrypt('rijndael-128', 'ecb');
+        rijEcb.open(secretKey);
+        let ciphertext = rijEcb.encrypt(text);
+        return ciphertext.toString('base64');
+    }
 
     // encryptXml(plainText) {    
     //     return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
