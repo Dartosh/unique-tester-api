@@ -133,17 +133,17 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
-            if (error) {
-                throw error;
-            }
-        });
+        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
+        //     if (error) {
+        //         throw error;
+        //     }
+        // });
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
-            if (error) {
-                throw error;
-            }
-        });
+        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
+        //     if (error) {
+        //         throw error;
+        //     }
+        // });
 
         return true;
     }
@@ -165,16 +165,16 @@ class EtxtAntiPlagiat {
     //     return encrypted;
     // }
 
-    encryptXml(text) {
-        let MCrypt = require('mcrypt').MCrypt;
-        let rijEcb = new MCrypt('rijndael-128', 'ecb');
-        rijEcb.open(secretKey);
-        let ciphertext = rijEcb.encrypt(text);
-        return ciphertext.toString('base64');
-    }
+    // encryptXml(text) {
+    //     let MCrypt = require('mcrypt').MCrypt;
+    //     let rijEcb = new MCrypt('', 'ecb');
+    //     rijEcb.open(secretKey);
+    //     let ciphertext = rijEcb.encrypt(text);
+    //     return ciphertext.toString('base64');
+    // }
 
     // encryptXml(plainText) {    
-    //     return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
+    //     return cipher.update(plainText, 'utf-8', 'base64') + cipher.final('base63');
     // }
 }
 
