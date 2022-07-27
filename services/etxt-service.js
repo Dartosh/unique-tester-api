@@ -133,17 +133,17 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
-            if (error) {
-                throw error;
-            }
-        });
+        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
+        //     if (error) {
+        //         throw error;
+        //     }
+        // });
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
-            if (error) {
-                throw error;
-            }
-        });
+        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
+        //     if (error) {
+        //         throw error;
+        //     }
+        // });
 
         return true;
     }
