@@ -170,8 +170,8 @@ const firstCheck = async (
   });
 
   for (let i = 0; i < checkInfo.length; i++) {
-    updatedTable[coords[linksMapper.get('first-anti-plagiarism')].y + 1 + i + from][coords[linksMapper.get('first-anti-plagiarism')].x] = `${checkInfo[i].textUnique}`;
-    updatedTable[coords[linksMapper.get('words-number')].y + 1 + i + from][coords[linksMapper.get('words-number')].x] = `${checkInfo[i].wordsCount}`;
+    updatedTable[coords[linksMapper.get('first-anti-plagiarism')].y + 1 + i][coords[linksMapper.get('first-anti-plagiarism')].x] = `${checkInfo[i].textUnique}`;
+    updatedTable[coords[linksMapper.get('words-number')].y + 1 + i][coords[linksMapper.get('words-number')].x] = `${checkInfo[i].wordsCount}`;
 
     if (checkInfo[i].isChecked === true) {
         updatedTable[coords[linksMapper.get('checkStatus')].y + 1 + i][coords[linksMapper.get('checkStatus')].x] = '1';
