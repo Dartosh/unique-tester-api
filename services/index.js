@@ -50,12 +50,14 @@ const uploadTexts = async (
   });
 
   let links = table.map((row, y) => {
-      if (
-        y >= from + coords[linksMapper.get('doc-link')].y &&
-        y <= to + coords[linksMapper.get('doc-link')].y
-      ) {
-        return row[coords[linksMapper.get('doc-link')].x]
-      };
+      // if (
+      //   y >= from + coords[linksMapper.get('doc-link')].y &&
+      //   y <= to + coords[linksMapper.get('doc-link')].y
+      // ) {
+      //   console.log(row[coords[linksMapper.get('doc-link')].x]);
+        
+      // };
+      return row[coords[linksMapper.get('doc-link')].x]
   });
 
   links = links.filter(elem => {
