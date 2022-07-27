@@ -82,7 +82,9 @@ class EtxtAntiPlagiat {
     }
 
     codeText(text) {
-        return Buffer.from(text).toString('base64');
+        const utf8Text = Buffer.from('text', 'utf-8').toString();
+        console.log(text);
+        return Buffer.from(utf8Text).toString('base64');
     }
 
     execRequest() {
