@@ -111,10 +111,10 @@ class EtxtAntiPlagiat {
     }
 
     createXml() {
-        const str = `<?xml version="1.0" encoding="UTF-8" ?>`;
+        let str = `<?xml version="1.0" encoding="UTF-8" ?>`;
         str = str + `\n <root>`;
         str = str + `\n     <serverType>${this.serverType}</serverType>`;
-        const entries = this.itemsToCheck.map((el) => {
+        let entries = this.itemsToCheck.map((el) => {
             const text = el.hasOwnProperty('text') && el.text.length
                 ? `<text>${el.text}</text>`
                 : ``;
@@ -128,7 +128,7 @@ class EtxtAntiPlagiat {
             substr = substr + `\n       </entry>`
             return substr;
         }).join('')
-        str = str + `\n</root>`;
+        str = str + `\n${entries}\n</root>`;
 
         console.log(str);
 
