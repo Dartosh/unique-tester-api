@@ -82,7 +82,7 @@ class EtxtAntiPlagiat {
     }
 
     codeText(text) {
-        const utf8Text = Buffer.from('text', 'utf-8').toString();
+        const utf8Text = Buffer.from(text, 'utf-8').toString();
         console.log(text);
         return Buffer.from(utf8Text).toString('base64');
     }
@@ -123,7 +123,6 @@ class EtxtAntiPlagiat {
 
             let substr = `\n   <entry>`;
             substr = substr + `\n      <id>${el.id}</id>`;
-            substr = substr + `\n      <type>${el.type}</type>`;
             substr = substr + `\n      <type>${el.type}</type>`;
             substr = substr + `\n      <name>${el.name}</name>`;
             substr = substr + `\n      ${text}`;
