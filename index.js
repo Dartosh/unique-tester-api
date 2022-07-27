@@ -36,14 +36,13 @@ app.post('/get-uids', async (req, res) => {
       columnFirstAntiPlag,
       columnSecondAntiPlag,
       columnWordsNumber,
+      from,
+      to,
     } = req.body;
 
     const spreadsheetLinkParts = spreadsheetLink.split('/');
 
     const spreadsheetId = spreadsheetLinkParts[5];
-
-    const from = 1;
-    const to = 3;
 
     const uids = await runner.uploadTexts(
       columnCheckStatus,
@@ -72,6 +71,8 @@ app.post('/check-first', async (req, res) => {
     columnFirstAntiPlag,
     columnSecondAntiPlag,
     columnWordsNumber,
+    from,
+    to,
   } = req.body;
 
   const spreadsheetLinkParts = spreadsheetLink.split('/');
@@ -88,6 +89,8 @@ app.post('/check-first', async (req, res) => {
     columnFirstAntiPlag,
     columnSecondAntiPlag,
     columnWordsNumber,
+    from,
+    to,
   });
 
   await runner.firstCheck(
@@ -100,6 +103,8 @@ app.post('/check-first', async (req, res) => {
     columnFirstAntiPlag,
     columnSecondAntiPlag,
     columnWordsNumber,
+    from,
+    to,
   );
 
   res.json({ isError: false });
