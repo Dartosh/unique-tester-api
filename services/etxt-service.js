@@ -5,7 +5,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const secretKey = 'j1YkIs3Mf9QadPwe';
-const algorithm = 'aes128';
+const algorithm = 'aes-128-ecb';
 const cipher = crypto.createCipher(algorithm, secretKey);
 
 class EtxtAntiPlagiat {
