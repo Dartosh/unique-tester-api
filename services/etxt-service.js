@@ -115,11 +115,11 @@ class EtxtAntiPlagiat {
         str = str + `\n <root>`;
         str = str + `\n     <serverType>${this.serverType}</serverType>`;
         let entries = this.itemsToCheck.map((el) => {
-            const text = el.hasOwnProperty('text') && el.text.length
+            let text = el.hasOwnProperty('text') && el.text.length
                 ? `<text>${el.text}</text>`
                 : ``;
 
-            const substr = `        <entry>`;
+            let substr = `        <entry>`;
             substr = substr + `\n           <id>${el.id}</id>`;
             substr = substr + `\n           <type>${el.type}</type>`;
             substr = substr + `\n           <type>${el.type}</type>`;
