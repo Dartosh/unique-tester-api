@@ -112,20 +112,20 @@ class EtxtAntiPlagiat {
 
     createXml() {
         let str = `<?xml version="1.0" encoding="UTF-8" ?>`;
-        str = str + `\n <root>`;
-        str = str + `\n     <serverType>${this.serverType}</serverType>`;
+        str = str + `\n<root>`;
+        str = str + `\n   <serverType>${this.serverType}</serverType>`;
         let entries = this.itemsToCheck.map((el) => {
             let text = el.hasOwnProperty('text') && el.text.length
                 ? `<text>${el.text}</text>`
                 : ``;
 
-            let substr = `        <entry>`;
-            substr = substr + `\n           <id>${el.id}</id>`;
-            substr = substr + `\n           <type>${el.type}</type>`;
-            substr = substr + `\n           <type>${el.type}</type>`;
-            substr = substr + `\n           <name>${el.name}</name>`;
-            substr = substr + `\n           ${text}`;
-            substr = substr + `\n       </entry>`
+            let substr = `\n   <entry>`;
+            substr = substr + `\n      <id>${el.id}</id>`;
+            substr = substr + `\n      <type>${el.type}</type>`;
+            substr = substr + `\n      <type>${el.type}</type>`;
+            substr = substr + `\n      <name>${el.name}</name>`;
+            substr = substr + `\n      ${text}`;
+            substr = substr + `\n   </entry>`
             return substr;
         }).join('')
         str = str + `\n${entries}\n</root>`;
