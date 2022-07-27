@@ -2,11 +2,11 @@ const path = require('path');
 const querystring = require("querystring");
 const { Curl } = require("node-libcurl");
 const fs = require('fs');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 
 const secretKey = 'j1YkIs3Mf9QadPwe';
-const algorithm = 'aes-128-ecb';
-const cipher = crypto.createCipher(algorithm, secretKey);
+// const algorithm = 'aes-128-ecb';
+// const cipher = crypto.createCipher(algorithm, secretKey);
 
 class EtxtAntiPlagiat {
     constructor(fileName, myCrypt) {
@@ -81,11 +81,11 @@ class EtxtAntiPlagiat {
         return true;
     }
 
-    codeText(text) {
-        const utf8Text = Buffer.from(text, 'utf-8').toString();
-        console.log(text);
-        return Buffer.from(utf8Text).toString('base64');
-    }
+    // codeText(text) {
+    //     const utf8Text = Buffer.from(text, 'utf-8').toString();
+    //     console.log(text);
+    //     return Buffer.from(utf8Text).toString('base64');
+    // }
 
     execRequest() {
         if (!this.createXml()) {
