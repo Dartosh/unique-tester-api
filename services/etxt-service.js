@@ -4,10 +4,6 @@ const { Curl } = require("node-libcurl");
 const fs = require('fs');
 const crypto = require('crypto');
 
-const secretKey = 'j1YkIs3Mf9QadPwe';
-const algorithm = 'aes-128-ecb';
-const cipher = crypto.createCipher(algorithm, textToBinary(secretKey));
-
 const textToBinary = (str = '') => {
     let res = '';
     res = str.split('').map(char => {
@@ -15,6 +11,10 @@ const textToBinary = (str = '') => {
     }).join(' ');
     return res;
  };
+
+const secretKey = 'j1YkIs3Mf9QadPwe';
+const algorithm = 'aes-128-ecb';
+const cipher = crypto.createCipher(algorithm, textToBinary(secretKey));
 
 class EtxtAntiPlagiat {
     constructor(fileName, myCrypt) {
