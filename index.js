@@ -20,9 +20,7 @@ app.listen(PORT, (req, res) => {
 });
 
 app.post('/callback', async (req, res) => {
-  console.log(req.body);
-  console.log(req.query);
-  console.log(req.params);
+  console.log(req);
 
   res.end('ok');
 });
