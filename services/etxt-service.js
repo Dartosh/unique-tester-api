@@ -133,37 +133,37 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
-        //     if (error) {
-        //         throw error;
-        //     }
-        // });
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
+            if (error) {
+                throw error;
+            }
+        });
 
-        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
-        //     if (error) {
-        //         throw error;
-        //     }
-        // });
+        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
+            if (error) {
+                throw error;
+            }
+        });
 
         return true;
     }
 
-    // encodeXml(text, skey) {
-    //     let len = text.length;
-    //     let padSize = 16 - ((len + 16 - 1) % 16 + 1);
+    encryptXml(text) {
+        let len = text.length;
+        let padSize = 16 - ((len + 16 - 1) % 16 + 1);
 
-    //     for (var i = 0; i < padSize; i++) { 
-    //         text += '\0';
-    //     }
+        for (var i = 0; i < padSize; i++) { 
+            text += '\0';
+        }
 
-    //     let cipher = crypto.createCipheriv('aes-128-ecb', skey, '');
-    //     cipher.setAutoPadding(false);
+        let cipher = crypto.createCipher('aes-128-ecb', secretKey);
+        cipher.setAutoPadding(false);
 
-    //     let encrypted = cipher.update(text, 'utf8', 'base64');
-    //     encrypted += cipher.final('base64');
+        let encrypted = cipher.update(text, 'utf8', 'base64');
+        encrypted += cipher.final('base64');
 
-    //     return encrypted;
-    // }
+        return encrypted;
+    }
 
     // encodeXml(text, skey) {
     //     var MCrypt = require('mcrypt').MCrypt;
@@ -173,9 +173,9 @@ class EtxtAntiPlagiat {
     //     return ciphertext.toString('base64');
     // }
 
-    encryptXml(plainText) {    
-        return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
-    }
+    // encryptXml(plainText) {    
+    //     return cipher.update(plainText, 'utf-8', 'hex') + cipher.final('hex');
+    // }
 }
 
 module.exports = {
