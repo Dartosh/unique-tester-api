@@ -6,13 +6,12 @@ const crypto = require('crypto');
 
 const secretKey = 'j1YkIs3Mf9QadPwe';
 const algorithm = 'aes128';
-const cipher = crypto.createCipher(algorithm, secretKey);
+// const cipher = crypto.createCipher(algorithm, secretKey);
 
 class EtxtAntiPlagiat {
     constructor(fileName, myCrypt) {
         // результат ответа от сервера после постановки задачи на выполнение
         this.taskResponse = {};
-
         // путь до сервера
         this.serverUrl = 'http://136.243.95.186:11035/etxt_antiplagiat';
         // тип сервера по умолчанию
@@ -116,14 +115,6 @@ class EtxtAntiPlagiat {
         <root>
         <serverType>${this.serverType}</serverType>
         ${this.itemsToCheck.map((el) => {
-            // const uservars = el.hasOwnProperty('uservars')
-            //     ? `
-            //         <uservars>
-            //             ${el.uservars.map((uvar, id) => `<${id}>${uvar}</${id}>`)}
-            //         </uservars>
-            //     ` 
-            //     : ``;
-
             const text = el.hasOwnProperty('text') && el.text.length
                 ? `<text>${el.text}</text>`
                 : ``;
@@ -138,19 +129,19 @@ class EtxtAntiPlagiat {
         }).join('')}
         </root>`;
 
-        // console.log(str);
+        console.log(str);
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
-            if (error) {
-                throw error;
-            }
-        });
+        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
+        //     if (error) {
+        //         throw error;
+        //     }
+        // });
 
-        fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
-            if (error) {
-                throw error;
-            }
-        });
+        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
+        //     if (error) {
+        //         throw error;
+        //     }
+        // });
 
         return true;
     }
@@ -180,9 +171,9 @@ class EtxtAntiPlagiat {
     //     return ciphertext.toString('base64');
     // }
 
-    encryptXml(plainText) {    
-        return cipher.update(plainText, 'utf-8', 'base64') + cipher.final('base64');
-    }
+    // encryptXml(plainText) {    
+    //     return cipher.update(plainText, 'utf-8', 'base64') + cipher.final('base64');
+    // }
 }
 
 module.exports = {
