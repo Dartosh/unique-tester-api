@@ -42,6 +42,9 @@ app.post('/get-uids', async (req, res) => {
 
     const spreadsheetId = spreadsheetLinkParts[5];
 
+    const from = 1;
+    const to = 3;
+
     const uids = await runner.uploadTexts(
       columnCheckStatus,
       columnBkTitle,
@@ -51,7 +54,10 @@ app.post('/get-uids', async (req, res) => {
       columnWordsNumber,
       spreadsheetId,
       rangeSheetTitle,
+      from,
+      to,
     );
+    
     res.json({ uids });
 });
 
