@@ -24,6 +24,6 @@ $string = str_pad($plainXml, $pad_length, "\0", STR_PAD_RIGHT);
 
 $string = openssl_encrypt ($string, "AES-128-ECB", CHECK_KEY, (OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING));
 
-$f = @fopen('./encodedXml.txt', 'w');
+$f = @fopen('/files/encodedXml.txt', 'w');
 fwrite($f, $string, strlen($string));
 fclose($f);
