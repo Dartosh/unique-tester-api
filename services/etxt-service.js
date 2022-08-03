@@ -134,9 +134,12 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFileSync("./files/plainXml.txt", str);
+        fs.writeFile("./files/plainXml.txt", str);
 
-        exec("php encrypt.php");
+        setTimeout(() => {
+            console.log('here');
+            exec("php encrypt.php");
+        }, 2000);
 
         // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
         //     if (error) {
