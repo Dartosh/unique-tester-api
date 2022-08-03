@@ -134,10 +134,11 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFile("./files/plainXml.txt", str, (err) => { console.error(`${new Date()} - FAILED TO WRITE FILE:\n${err}`); });
+        fs.writeFile("./files/plainXml.txt", str, (err) => {
+            if (err) throw new Error(`${new Date()} - FAILED TO WRITE FILE`);
+        });
 
         setTimeout(() => {
-            console.log('here');
             exec("php encrypt.php");
         }, 2000);
 
