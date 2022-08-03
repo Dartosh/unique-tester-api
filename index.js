@@ -157,7 +157,7 @@ app.get('/testing', async (req, res) => {
 
   // test.getAbsolutePath();
 
-  exec("php scripts/encript.php");
+  exec("php encript.php");
 
   res.json({ isError: false });
 });
