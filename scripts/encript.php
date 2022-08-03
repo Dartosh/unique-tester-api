@@ -4,7 +4,7 @@ define('CHECK_KEY', 'AAAAAAAAAAAAAAAA');
 
 $plainXml = '';
 
-echo "\n\n".file_get_contents("/files/plainXml.txt")."\n\n";
+echo "\n\n".file_get_contents("plainXml.txt")."\n\n";
 
 
 $str_length = strlen($plainXml);
