@@ -2,7 +2,7 @@
 
 define('CHECK_KEY', 'AAAAAAAAAAAAAAAA');
 
-$plainXml = file_get_contents("../files/plainXml.txt");
+$plainXml = file_get_contents("./files/plainXml.txt");
 
 $str_length = strlen($plainXml);
 $pad_length = ($str_length % 16 == 0) ? $str_length : ($str_length +  (16 - ($str_length % 16)));
