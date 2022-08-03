@@ -2,6 +2,7 @@ const path = require('path');
 const querystring = require("querystring");
 const { Curl } = require("node-libcurl");
 const fs = require('fs');
+const exec = require("child_process").exec;
 // const crypto = require('crypto');
 
 const secretKey = 'j1YkIs3Mf9QadPwe';
