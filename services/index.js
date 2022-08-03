@@ -185,6 +185,10 @@ const firstCheck = async (
   await googleService.updateSpreadsheetMetadata(googleSheets, spreadsheetId, rangeSheetTitle, updatedTable);
 }
 
+// const handleEtxtUpload = async () => {
+
+// }
+
 module.exports = {
   uploadTexts,
   firstCheck,
