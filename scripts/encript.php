@@ -4,22 +4,8 @@ define('CHECK_KEY', 'AAAAAAAAAAAAAAAA');
 
 $plainXml = '';
 
-$fp = @fopen("/files/plainXml.txt", "r");
+echo "\n\n".file_get_contents("/files/plainXml.txt")."\n\n";
 
-echo CHECK_KEY;
-
-if ($fp) {
-    while (($buffer = fgets($fp, 4096)) !== false) {
-        $plainXml = $plainXml.$buffer;
-        echo $buffer;
-    }
-    if (!feof($fp)) {
-        echo "Ошибка: fgets() неожиданно потерпел неудачу\n";
-    }
-    fclose($fp);
-}
-
-echo "Text: ".$plainXml;
 
 $str_length = strlen($plainXml);
 $pad_length = ($str_length % 16 == 0) ? $str_length : ($str_length +  (16 - ($str_length % 16)));
