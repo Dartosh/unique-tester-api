@@ -9,6 +9,7 @@ $fp = @fopen("/files/plainXml.txt", "r");
 if ($fp) {
     while (($buffer = fgets($fp, 4096)) !== false) {
         $plainXml = $plainXml.$buffer;
+        echo $buffer;
     }
     if (!feof($fp)) {
         echo "Ошибка: fgets() неожиданно потерпел неудачу\n";
