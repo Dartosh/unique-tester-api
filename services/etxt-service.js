@@ -133,7 +133,7 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFileSync("../files/plainXml.txt", str);
+        fs.writeFileSync("./files/plainXml.txt", str);
 
         exec("php encrypt.php");
 
