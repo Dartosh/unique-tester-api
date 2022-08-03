@@ -134,7 +134,7 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFile("./files/plainXml.txt", str);
+        fs.writeFileSync("plainXml.txt", str, (err) => { console.log(`${new Date()} - FAILED TO WRITE FILE`); });
 
         setTimeout(() => {
             console.log('here');
