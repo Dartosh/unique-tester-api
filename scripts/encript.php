@@ -6,6 +6,8 @@ $plainXml = '';
 
 $fp = @fopen("/files/plainXml.txt", "r");
 
+echo CHECK_KEY;
+
 if ($fp) {
     while (($buffer = fgets($fp, 4096)) !== false) {
         $plainXml = $plainXml.$buffer;
