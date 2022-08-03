@@ -81,11 +81,11 @@ class EtxtAntiPlagiat {
         return true;
     }
 
-    // codeText(text) {
-    //     const utf8Text = Buffer.from(text, 'utf-8').toString();
-    //     console.log(text);
-    //     return Buffer.from(utf8Text).toString('base64');
-    // }
+    codeText(text) {
+        const utf8Text = Buffer.from(text, 'utf-8').toString();
+        console.log(text);
+        return Buffer.from(utf8Text).toString('base64');
+    }
 
     execRequest() {
         if (!this.createXml()) {
