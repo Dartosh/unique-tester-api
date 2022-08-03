@@ -112,48 +112,48 @@ app.post('/check-first', async (req, res) => {
 });
 
 app.get('/testing', async (req, res) => {
-  // const test = new EtxtAntiPlagiat('tasksToCheck', 1);
+  const test = new EtxtAntiPlagiat('tasksToCheck', 1);
 
-  // setTimeout(() => {
-  //   if (!test.isConnect) {
-  //     throw new Error('Failed to connet to the Etext server...');
-  //   }
-  // }, 2000);
+  setTimeout(() => {
+    if (!test.isConnect) {
+      throw new Error('Failed to connet to the Etext server...');
+    }
+  }, 2000);
 
-  // const itemsToCheck = [
-  //   {
-  //     id: 1,
-  //     text: 'At vero eos et accusamus et iusto odio dignissimos ducimus',
-  //     type: 'text',
-  //     name: 'Text 1',
-  //   },
-  //   {
-  //     id: 2,
-  //     text: 'qui blanditiis praesentium voluptatum deleniti atque',
-  //     type: 'text',
-  //     name: 'Text 2',
-  //   },
-  //   {
-  //     id: 3,
-  //     text: 'occaecati cupiditate non provident, similique sunt',
-  //     type: 'text',
-  //     name: 'Text 3',
-  //   },
-  //   {
-  //     id: 4,
-  //     text: 'in culpa qui officia deserunt mollitia animi, id est laborum',
-  //     type: 'text',
-  //     name: 'Text 4',
-  //   },
-  // ]
+  const itemsToCheck = [
+    {
+      id: 1,
+      text: 'At vero eos et accusamus et iusto odio dignissimos ducimus',
+      type: 'text',
+      name: 'Text 1',
+    },
+    {
+      id: 2,
+      text: 'qui blanditiis praesentium voluptatum deleniti atque',
+      type: 'text',
+      name: 'Text 2',
+    },
+    {
+      id: 3,
+      text: 'occaecati cupiditate non provident, similique sunt',
+      type: 'text',
+      name: 'Text 3',
+    },
+    {
+      id: 4,
+      text: 'in culpa qui officia deserunt mollitia animi, id est laborum',
+      type: 'text',
+      name: 'Text 4',
+    },
+  ]
 
-  // itemsToCheck.forEach((text) => {
-  //   test.addItemToCheck(text);
-  // });
+  itemsToCheck.forEach((text) => {
+    test.addItemToCheck(text);
+  });
 
-  // setTimeout(() => {
-  //   test.execRequest();
-  // }, 4000);
+  setTimeout(() => {
+    test.execRequest();
+  }, 4000);
 
   // test.getAbsolutePath();
 
