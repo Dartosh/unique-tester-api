@@ -157,7 +157,11 @@ app.get('/testing', async (req, res) => {
 
   // test.getAbsolutePath();
 
-  exec("php encript.php");
+  exec("php encrypt.php");
+
+  setTimeout(() => {
+    exec("php decrypt.php");
+  }, 1500);
 
   res.json({ isError: false });
 });
