@@ -4,6 +4,7 @@ const runner = require('./services/index');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const exec = require("child_process").exec;
+const fs = require('fs');
 
 const { EtxtAntiPlagiat } = require('./services/etxt-service');
 
@@ -20,8 +21,16 @@ app.listen(PORT, (req, res) => {
   console.log('Running on port 8800...')
 });
 
-app.post('/callback', async (req, res) => {
+app.post('/etxt-callback', async (req, res) => {
   console.log(req);
+
+  const encodedXml = req.body.Xml;
+
+  fs.writeFileSync("./files/plainXml.txt", encodedXml, (err) => {
+    if (err) throw new Error(`${new Date()} - FAILED TO WRITE FILE...`);
+  });
+
+  exec("php decrypt.php");
 
   res.end('ok');
 });
@@ -157,11 +166,11 @@ app.get('/testing', async (req, res) => {
 
   // test.getAbsolutePath();
 
-  exec("php encrypt.php");
+  // exec("php encrypt.php");
 
-  setTimeout(() => {
-    exec("php decrypt.php");
-  }, 1500);
+  // setTimeout(() => {
+  //   exec("php decrypt.php");
+  // }, 1500);
 
   res.json({ isError: false });
 });

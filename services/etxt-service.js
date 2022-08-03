@@ -100,7 +100,7 @@ class EtxtAntiPlagiat {
         curlTest.setOpt(Curl.option.POST, 1);
         curlTest.setOpt(
             Curl.option.POSTFIELDS,
-            `xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localServer}/api/callback`
+            `xmlUrl=${this.localServer}/tasks.xml&xmlAnswerUrl=${this.localServer}/api/etxt-callback`
         );
         curlTest.setOpt(Curl.option.TRANSFERTEXT, 1);
         curlTest.setOpt(Curl.option.TIMEOUT, 5);
@@ -134,25 +134,11 @@ class EtxtAntiPlagiat {
 
         console.log(str);
 
-        fs.writeFile("./files/plainXml.txt", str, (err) => {
-            if (err) throw new Error(`${new Date()} - FAILED TO WRITE FILE`);
+        fs.writeFileSync("./files/plainXml.txt", str, (err) => {
+            if (err) throw new Error(`${new Date()} - FAILED TO WRITE FILE...`);
         });
 
-        setTimeout(() => {
-            exec("php encrypt.php");
-        }, 2000);
-
-        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), '', function(error){
-        //     if (error) {
-        //         throw error;
-        //     }
-        // });
-
-        // fs.writeFile(path.join(__dirname, '..', '..', '..', '..', 'var', 'www', 'tasks', 'tasks.xml'), this.encryptXml(str), function(error){
-        //     if (error) {
-        //         throw error;
-        //     }
-        // });
+        exec("php encrypt.php");
 
         return true;
     }
