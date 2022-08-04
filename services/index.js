@@ -1,8 +1,8 @@
 const googleService = require('./google-service');
 const textRuService = require('./text-ru-service');
-const { auth, client, googleDocuments, googleSheets } = await googleService.setGoogleServices();
 
 async function getTextsFromDocuments(documentIds) {
+  const { auth, client, googleDocuments, googleSheets } = await googleService.setGoogleServices();
   for (let documentId of documentIds) {
     try {
       const documentMetadata = await googleService.getDocumentMetadata(googleDocuments, documentId);
@@ -46,6 +46,7 @@ const uploadTexts = async (
     from = 1,
     to = 5,
 ) => {
+  const { auth, client, googleDocuments, googleSheets } = await googleService.setGoogleServices();
   const tableMetadata = await googleService.getSpreadsheetMetadata(googleSheets, spreadsheetId, rangeSheetTitle);
 
   const table = tableMetadata.data.values;
