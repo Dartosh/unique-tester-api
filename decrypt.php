@@ -1,6 +1,6 @@
 <?php
 
-define('CHECK_KEY', 'AAAAAAAAAAAAAAAA');
+define('CHECK_KEY', 'j1YkIs3Mf9QadPwe');
 
 $string = file_get_contents("./files/encodedXml.txt");
 

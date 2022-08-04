@@ -1,5 +1,38 @@
 const googleService = require('./google-service');
 const textRuService = require('./text-ru-service');
+const { auth, client, googleDocuments, googleSheets } = await googleService.setGoogleServices();
+
+async function getTextsFromDocuments(documentIds) {
+  for (let documentId of documentIds) {
+    try {
+      const documentMetadata = await googleService.getDocumentMetadata(googleDocuments, documentId);
+
+      const documentContent = documentMetadata.data.body.content;
+
+      let text = '';
+
+      for (let structeralElement of documentContent) {
+        if (structeralElement.hasOwnProperty('paragraph')) {
+          const paragraph = structeralElement.paragraph;
+          if (paragraph.hasOwnProperty('elements')) {
+            const elements = paragraph.elements
+            for (let element of elements) {
+              if (element.hasOwnProperty('textRun')) {
+                text += element.textRun.content;
+              }
+            }
+          }
+        }
+      }
+
+      text = text.replace(/\n/g, ' ');
+
+      texts.push(text);
+    } catch {
+      texts.push('');
+    }
+}
+}
 
 const uploadTexts = async (
     columnCheckStatus,
@@ -13,12 +46,12 @@ const uploadTexts = async (
     from = 1,
     to = 5,
 ) => {
-  const { auth, client, googleDocuments, googleSheets } = await googleService.setGoogleServices();
-  // console.log(googleSheets);
   const tableMetadata = await googleService.getSpreadsheetMetadata(googleSheets, spreadsheetId, rangeSheetTitle);
-  // console.log('here2');
+
   const table = tableMetadata.data.values;
+
   const coords = [];
+
   const columns = [
     columnCheckStatus,
     columnBkTitle,

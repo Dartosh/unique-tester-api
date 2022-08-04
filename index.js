@@ -32,6 +32,10 @@ app.post('/etxt-callback', async (req, res) => {
 
   exec("php decrypt.php");
 
+  const fileContent = fs.readFileSync("./files/decodedXml.txt", "utf8");
+
+  console.log(fileContent);
+
   res.end('ok');
 });
 
