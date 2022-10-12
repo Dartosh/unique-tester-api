@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model textRuTexts {
+  uid         String  @unique
+  name        String?
+  text        String?
+  wordsCount  Int?    @map("words_count")
+  jsonResult  Json?   @map("json_result")
+  spellCheck  Json?   @map("spell_check")
+  textUnique  Float?
+
+  @@map("text_ru_texts")
+}
