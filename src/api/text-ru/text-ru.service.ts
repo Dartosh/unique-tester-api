@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { lastValueFrom } from 'rxjs';
 
 import { PrismaService } from 'src/modules/db';
+import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
 import { TextRuFileResultDto } from './dto/text-ru-file-result.dto';
 import { TextRuFileUidResponseInterface } from './interfaces/responses/text-ru-file-uid-res.interface';
 import { TextRuFileInterface } from './interfaces/text-ru-file.interface';
@@ -21,6 +22,10 @@ export class TextRuService {
   // ): string {
   //   return String(name);
   // }
+
+  public async uploadFilesTextRu(props: SpreadSheetDataDto) {
+    
+  }
 
   private makeFileFormData(file: TextRuFileInterface): FormData {
     const fileKeys = Object.keys(file);
