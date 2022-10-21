@@ -13,6 +13,7 @@ import { GoogleModule } from './google/google.module';
 import appConfig from 'src/config/app.config';
 import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
 import { RawBodyMiddleware } from 'src/middleware/raw-body.middleware';
+import { UrlencodedBodyMiddleware } from 'src/middleware/urlencoded-body.middleware';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { RawBodyMiddleware } from 'src/middleware/raw-body.middleware';
 export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {
     consumer
-      .apply(RawBodyMiddleware)
+      .apply(UrlencodedBodyMiddleware)
       .forRoutes({
         path: '/text-ru/text/save',
         method: RequestMethod.POST,
