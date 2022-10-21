@@ -1,31 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
-
-import { IsString } from 'class-validator';
+import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { GoogleService } from './google.service';
 
-class a {
-  @ApiProperty()
-  @IsString()
-  spreadsheetId: string;
-
-  @ApiProperty()
-  @IsString()
-  range: string;
-}
-
+@ApiTags('google')
 @Controller('google')
 export class GoogleController {
   constructor(private readonly googleService: GoogleService) {}
-
-  @Post('upload-test')
-  public uploadFiles(@Body() props: a): Promise<any> {
-    const metadata = this.googleService.getSpreadsheetMetadata(
-      props.spreadsheetId,
-      props.range,
-    );
-
-    return metadata;
-  }
 }

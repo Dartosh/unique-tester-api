@@ -377,6 +377,8 @@ export class TextRuService {
 
   public async saveFilesResults(props: TextRuFileResultDto): Promise<void> {
     try {
+      console.log('Got request: ', props);
+
       await this.db.textRuResult.update({
         where: {
           uid: props.uid,
