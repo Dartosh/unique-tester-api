@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
@@ -7,6 +12,7 @@ import { TextRuModule } from './text-ru/text-ru.module';
 import { GoogleModule } from './google/google.module';
 import appConfig from 'src/config/app.config';
 import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
+import { RawBodyMiddleware } from 'src/middleware/raw-body.middleware';
 
 @Module({
   imports: [
@@ -21,6 +27,13 @@ import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
 })
 export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(JsonBodyMiddleware).forRoutes('*');
+    consumer
+      .apply(RawBodyMiddleware)
+      .forRoutes({
+        path: '/cashbox/:path',
+        method: RequestMethod.POST,
+      })
+      .apply(JsonBodyMiddleware)
+      .forRoutes('*');
   }
 }
