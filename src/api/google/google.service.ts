@@ -3,11 +3,17 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { PrismaService } from 'src/modules/db';
 import { GoogleAuth } from 'googleapis-common';
-import { docs_v1, google, GoogleApis, sheets_v4 } from 'googleapis';
+import { docs_v1, GoogleApis, sheets_v4 } from 'googleapis';
 
 import { googleConfiguration } from 'src/config/google.config';
 import { GoogleDocumentBuilder } from './classes/document-builder.class';
 import { GoogleDocument } from './interfaces/google-document.interface';
+import { SpreadSheetDataDto } from './dto/spreadsheet-data.dto';
+import { SpreadsheetHeader } from './classes/spreadsheet-header.class';
+import { GoogleSheetHeadersInterface } from './interfaces/google-sheet-headers.interface';
+import { GoogleSheetHeaderInterface } from './interfaces/google-sheet-structure.interface';
+import { GoogleSheetHeaderTypeEnum } from './enum/google-sheet-header-type.enum';
+import { GoogleSpreadsheetBuilder } from './classes/spreadsheet-builder.class';
 
 @Injectable()
 export class GoogleService {
@@ -24,6 +30,56 @@ export class GoogleService {
     this.googleAuth = googleConfiguration.getGoogleAuth();
     this.googleDocs = this.googleApis.docs('v1');
     this.googleSheets = this.googleApis.sheets('v4');
+  }
+
+  private createTableHeadersEntities(
+    tableHeaders: GoogleSheetHeadersInterface,
+  ) {
+    const headerEntities: GoogleSheetHeaderInterface[] = [];
+
+    headerEntities.push(
+      new SpreadsheetHeader(
+        tableHeaders.columnCheckStatus,
+        GoogleSheetHeaderTypeEnum.checkStatus,
+      ),
+    );
+
+    headerEntities.push(
+      new SpreadsheetHeader(
+        tableHeaders.columnDockLink,
+        GoogleSheetHeaderTypeEnum.documentLink,
+      ),
+    );
+
+    headerEntities.push(
+      new SpreadsheetHeader(
+        tableHeaders.columnBkTitle,
+        GoogleSheetHeaderTypeEnum.documentTitle,
+      ),
+    );
+
+    headerEntities.push(
+      new SpreadsheetHeader(
+        tableHeaders.clumnFirstAntiPlag,
+        GoogleSheetHeaderTypeEnum.textRuResult,
+      ),
+    );
+
+    headerEntities.push(
+      new SpreadsheetHeader(
+        tableHeaders.clumnSecondAntiPlag,
+        GoogleSheetHeaderTypeEnum.eTextResult,
+      ),
+    );
+
+    headerEntities.push(
+      new SpreadsheetHeader(
+        tableHeaders.clumnWordsNumber,
+        GoogleSheetHeaderTypeEnum.wordsCount,
+      ),
+    );
+
+    return headerEntities;
   }
 
   public async getSpreadsheetMetadata(spreadsheetId: string, range: string) {
@@ -44,7 +100,9 @@ export class GoogleService {
   }
 
   private async getDocumentEntity(documentId: string): Promise<GoogleDocument> {
-    const googleDocument = new GoogleDocumentBuilder(documentId, true);
+    const isCorrect = documentId ? true : false;
+
+    const googleDocument = new GoogleDocumentBuilder(documentId, isCorrect);
 
     try {
       const documentMetadata = await this.getDocumentMetadata(documentId);
@@ -73,15 +131,41 @@ export class GoogleService {
     }
   }
 
-  public async getTextsFromDocuments(documentsIds: string[]) {
-    const documentPromises = documentsIds.map(async (documentId) => {
-      const documentEntity = await this.getDocumentEntity(documentId);
+  public async getTextFromDocument(documentId: string) {
+    const documentEntity = await this.getDocumentEntity(documentId);
 
-      return documentEntity;
-    });
+    return documentEntity;
+  }
 
-    const googleDocumentsEntities = await Promise.allSettled(documentPromises);
+  public async getSpreadsheetTable(
+    props: SpreadSheetDataDto,
+  ): Promise<GoogleSpreadsheetBuilder> {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { from, to, spreadsheetId, rangeSheetTitle, ...tableHeaders } =
+        props;
 
-    return googleDocumentsEntities;
+      const tableMetadata = await this.getSpreadsheetMetadata(
+        spreadsheetId,
+        rangeSheetTitle,
+      );
+
+      const tableValues = tableMetadata?.values;
+
+      const tableHeadersEntities =
+        this.createTableHeadersEntities(tableHeaders);
+
+      const spreadsheet = new GoogleSpreadsheetBuilder(
+        tableValues,
+      ).setColumnHeaders(tableHeadersEntities);
+
+      return spreadsheet;
+    } catch (error) {
+      console.log('\nGetSpreadsheetHeadersError: ', error);
+
+      throw new BadRequestException(
+        'Произошла ошибка при попытке получить данные о таблице, проверьте введённые данные и права доступа таблицы.',
+      );
+    }
   }
 }

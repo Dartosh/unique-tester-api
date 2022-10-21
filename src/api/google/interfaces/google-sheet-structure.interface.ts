@@ -8,12 +8,18 @@ export interface GoogleSheetHeaderInterface {
   xCoord: number;
 
   yCoord: number;
+
+  setXCoord(xCoord: number): GoogleSheetHeaderInterface;
+
+  setYCoord(yCoord: number): GoogleSheetHeaderInterface;
 }
 
 export interface GoogleSheetInterface {
+  tableValues: any;
+
   tableHeaders: GoogleSheetHeaderInterface[];
 
-  setColumnHeader(header: GoogleSheetHeaderInterface): void;
+  setColumnHeaders(headers: GoogleSheetHeaderInterface[]): GoogleSheetInterface;
 
   getHeaderByType(type: GoogleSheetHeaderTypeEnum): GoogleSheetHeaderInterface;
 }

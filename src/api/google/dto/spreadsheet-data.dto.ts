@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class SpreadSheetDataDto {
   @ApiProperty()
@@ -34,11 +34,15 @@ export class SpreadSheetDataDto {
   @IsString()
   rangeSheetTitle: string;
 
-  @ApiProperty()
-  @IsString()
-  from: number;
+  @ApiPropertyOptional()
+  @IsNumber()
+  from?: number;
+
+  @ApiPropertyOptional()
+  @IsNumber()
+  to?: number;
 
   @ApiProperty()
-  @IsString()
-  to: number;
+  @IsBoolean()
+  isOnlyWords: boolean;
 }

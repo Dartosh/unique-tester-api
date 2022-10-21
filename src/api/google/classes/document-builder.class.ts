@@ -1,15 +1,11 @@
 import { GoogleDocument } from '../interfaces/google-document.interface';
 
 export class GoogleDocumentBuilder implements GoogleDocument {
-  public readonly documentId: string;
-
-  public readonly title: string;
+  public documentId?: string;
 
   public isCorrect: boolean;
 
   public text: string;
-
-  public wordsCount: number;
 
   constructor(documentId: string, isCorrect: boolean /*, title: string*/) {
     this.documentId = documentId;

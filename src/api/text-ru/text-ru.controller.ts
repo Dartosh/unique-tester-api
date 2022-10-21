@@ -11,9 +11,11 @@ export class TextRuController {
 
   @ApiOkResponse()
   @HttpCode(204)
-  @Post('upload-test')
-  public uploadFiles(@Body() props: SpreadSheetDataDto): Promise<void> {
-    return this.textRuService.uploadFilesTextRu([props]);
+  @Post('text/upload')
+  public uploadFiles(@Body() props: SpreadSheetDataDto): Promise<{
+    massage: string;
+  }> {
+    return this.textRuService.uploadFilesTextRu(props);
   }
 
   @ApiOkResponse()
