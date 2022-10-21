@@ -10,14 +10,93 @@ datasource db {
   url      = env("DB_URL")
 }
 
-model textRuTexts {
-  uid         String  @unique
-  name        String?
-  text        String?
-  wordsCount  Int?    @map("words_count")
-  jsonResult  Json?   @map("json_result")
-  spellCheck  Json?   @map("spell_check")
-  textUnique  Float?
+model Table {
+  id                    Int        @id @default(autoincrement())
+  tableGoogleId         String     @map("table_google_id")
+  tableRange            String     @map("table_range")
+  checkStatus           String     @map("check_status")
+  checkStatusCoords     Coords     @relation(name: "table_check_status", fields: [checkStatusCoordsId], references: [id], onDelete: Cascade)
+  checkStatusCoordsId   Int        @map("check_status_coords_id")
+  documentTitle         String     @map("document_title")
+  documentTitleCoords   Coords     @relation(name: "table_document_title", fields: [documentTitleCoordsId], references: [id], onDelete: Cascade)
+  documentTitleCoordsId Int        @map("document_title_coords_id")
+  documentLink          String     @map("document_link")
+  documentLinkCoords    Coords     @relation(name: "table_document_link", fields: [documentLinkCoordsId], references: [id], onDelete: Cascade)
+  documentLinkCoordsId  Int        @map("document_link_coords_id")
+  textRuResult          String     @map("text_ru_result")
+  textRuResultCoords    Coords     @relation(name: "table_text_ru_result", fields: [textRuResultCoordsId], references: [id], onDelete: Cascade)
+  textRuResultCoordsId  Int        @map("text_ru_result_coords_id")
+  eTextResult           String     @map("e_text_result")
+  eTextResultCoords     Coords     @relation(name: "table_e_text_result", fields: [eTextResultCoordsId], references: [id], onDelete: Cascade)
+  eTextResultCoordsId   Int        @map("e_text_result_coords_id")
+  wordsCount            String     @map("words_count")
+  wordsCountCoords      Coords     @relation(name: "table_words_count", fields: [wordsCountCoordsId], references: [id], onDelete: Cascade)
+  wordsCountCoordsId    Int        @map("words_count_coords_id")
+  documents             Document[]
 
-  @@map("text_ru_texts")
+  @@unique([tableGoogleId, tableRange])
+  @@map("tables")
+}
+
+model Coords {
+  id                    Int        @id @default(autoincrement())
+  xCoord                Int        @map("x_coord")
+  yCoord                Int        @map("y_coord")
+  tableCheckStatus      Table[]    @relation(name: "table_check_status")
+  tableDocumentTitle    Table[]    @relation(name: "table_document_title")
+  tableDocumentLink     Table[]    @relation(name: "table_document_link")
+  tableTextRuResult     Table[]    @relation(name: "table_text_ru_result")
+  tableETextTesult      Table[]    @relation(name: "table_e_text_result")
+  tableWordsCount       Table[]    @relation(name: "table_words_count")
+  documentCheckStatus   Document[] @relation(name: "document_check_status")
+  documentDocumentTitle Document[] @relation(name: "document_document_title")
+  documentDocumentLink  Document[] @relation(name: "document_document_link")
+  documentTextRuResult  Document[] @relation(name: "document_text_ru_result")
+  documentETextTesult   Document[] @relation(name: "document_e_text_result")
+  documentWordsCount    Document[] @relation(name: "document_words_count")
+
+  @@map("coords")
+}
+
+model Document {
+  table                 Table         @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  tableId               Int           @map("table_id")
+  documentGoogleId      String        @unique @map("document_google_id")
+  text                  String?
+  checkStatus           String?       @map("check_status")
+  checkStatusCoords     Coords?       @relation(name: "document_check_status", fields: [checkStatusCoordsId], references: [id], onDelete: Cascade)
+  checkStatusCoordsId   Int?          @map("check_status_coords_id")
+  documentTitle         String?       @map("document_title")
+  documentTitleCoords   Coords?       @relation(name: "document_document_title", fields: [documentTitleCoordsId], references: [id], onDelete: Cascade)
+  documentTitleCoordsId Int?          @map("document_title_coords_id")
+  documentLink          String?       @map("document_link")
+  documentLinkCoords    Coords?       @relation(name: "document_document_link", fields: [documentLinkCoordsId], references: [id], onDelete: Cascade)
+  documentLinkCoordsId  Int?          @map("document_link_coords_id")
+  textRuResult          String?       @map("text_ru_result")
+  textRuResultCoords    Coords?       @relation(name: "document_text_ru_result", fields: [textRuResultCoordsId], references: [id], onDelete: Cascade)
+  textRuResultCoordsId  Int?          @map("text_ru_result_coords_id")
+  eTextResult           String?       @map("e_text_result")
+  eTextResultCoords     Coords?       @relation(name: "document_e_text_result", fields: [eTextResultCoordsId], references: [id], onDelete: Cascade)
+  eTextResultCoordsId   Int?          @map("e_text_result_coords_id")
+  wordsCount            String?       @map("words_count")
+  wordsCountCoords      Coords?       @relation(name: "document_words_count", fields: [wordsCountCoordsId], references: [id], onDelete: Cascade)
+  wordsCountCoordsId    Int?          @map("words_count_coords_id")
+  wordsCountValue       Int?          @map("words_count_value")
+  textRuResultResponse  TextRuResult?
+
+  @@map("documents")
+}
+
+model TextRuResult {
+  uid        String   @unique
+  name       String?
+  text       String?
+  wordsCount Int?     @map("words_count")
+  jsonResult Json?    @map("json_result")
+  spellCheck Json?    @map("spell_check")
+  textUnique Float?
+  document   Document @relation(fields: [documentId], references: [documentGoogleId], onDelete: Cascade)
+  documentId String   @unique @map("text_ru_result_uid")
+
+  @@map("text_ru_results")
 }
