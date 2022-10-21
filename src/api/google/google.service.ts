@@ -14,6 +14,7 @@ import { GoogleSheetHeadersInterface } from './interfaces/google-sheet-headers.i
 import { GoogleSheetHeaderInterface } from './interfaces/google-sheet-structure.interface';
 import { GoogleSheetHeaderTypeEnum } from './enum/google-sheet-header-type.enum';
 import { GoogleSpreadsheetBuilder } from './classes/spreadsheet-builder.class';
+import { UpdateTableDto } from './dto/update-table.dto';
 
 @Injectable()
 export class GoogleService {
@@ -167,5 +168,51 @@ export class GoogleService {
         'Произошла ошибка при попытке получить данные о таблице, проверьте введённые данные и права доступа таблицы.',
       );
     }
+  }
+
+  public async updateSpreadsheetTable(props: UpdateTableDto): Promise<void> {
+    const spreadsheetTable = await this.db.table.findUnique({
+      where: {
+        tableGoogleId_tableRange: {
+          tableGoogleId: props.spreadsheetId,
+          tableRange: props.rangeSheetTitle,
+        },
+      },
+      select: {
+        documents: {
+          select: {
+            textRuResultResponse: true,
+            checkStatus: true,
+            checkStatusCoords: {
+              select: {
+                xCoord: true,
+                yCoord: true,
+              },
+            },
+            textRuResult: true,
+            textRuResultCoords: {
+              select: {
+                xCoord: true,
+                yCoord: true,
+              },
+            },
+            eTextResult: true,
+            eTextResultCoords: {
+              select: {
+                xCoord: true,
+                yCoord: true,
+              },
+            },
+            wordsCountValue: true,
+            wordsCountCoords: {
+              select: {
+                xCoord: true,
+                yCoord: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }
