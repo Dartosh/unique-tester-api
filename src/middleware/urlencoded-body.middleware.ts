@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 
-import express from 'express';
+import * as express from 'express';
 
 @Injectable()
 export class UrlencodedBodyMiddleware implements NestMiddleware {
