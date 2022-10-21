@@ -94,6 +94,7 @@ model TextRuResult {
   wordsCount Int?     @map("words_count")
   jsonResult Json?    @map("json_result")
   spellCheck Json?    @map("spell_check")
+  seoCheck   Json?    @map("seo_check")
   textUnique Float?
   document   Document @relation(fields: [documentId], references: [documentGoogleId], onDelete: Cascade)
   documentId String   @unique @map("text_ru_result_uid")

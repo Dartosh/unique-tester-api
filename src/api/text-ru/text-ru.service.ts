@@ -375,18 +375,17 @@ export class TextRuService {
     }
   }
 
-  public async saveFilesResults(props: any): Promise<void> {
+  public async saveFilesResults(props: TextRuFileResultDto): Promise<void> {
     try {
-      console.log('Got request: ', props);
-
       await this.db.textRuResult.update({
         where: {
           uid: props.uid,
         },
         data: {
-          textUnique: props.text_unique,
-          // spellCheck: JSON.stringify(props.spell_check.replace('\\', '')),
-          // jsonResult: JSON.stringify(props.json_result.replace('\\', '')),
+          textUnique: +props.text_unique,
+          seoCheck: JSON.stringify(props.seo_check.replace('\\', '')),
+          spellCheck: JSON.stringify(props.spell_check.replace('\\', '')),
+          jsonResult: JSON.stringify(props.json_result.replace('\\', '')),
         },
       });
     } catch (error) {

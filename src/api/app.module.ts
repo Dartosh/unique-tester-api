@@ -12,7 +12,6 @@ import { TextRuModule } from './text-ru/text-ru.module';
 import { GoogleModule } from './google/google.module';
 import appConfig from 'src/config/app.config';
 import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
-import { RawBodyMiddleware } from 'src/middleware/raw-body.middleware';
 import { UrlencodedBodyMiddleware } from 'src/middleware/urlencoded-body.middleware';
 
 @Module({
