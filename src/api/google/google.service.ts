@@ -226,19 +226,19 @@ export class GoogleService {
       spreadsheetTable.documents.forEach((document) => {
         updatedSpreadsheetTableValues[document.checkStatusCoords.yCoord][
           document.checkStatusCoords.xCoord
-        ] = document.checkStatus;
+        ] = document?.checkStatus || '';
 
         updatedSpreadsheetTableValues[document.eTextResultCoords.yCoord][
           document.eTextResultCoords.xCoord
-        ] = document.eTextResult;
+        ] = document?.eTextResult || '';
 
         updatedSpreadsheetTableValues[document.textRuResultCoords.yCoord][
           document.textRuResultCoords.xCoord
-        ] = document.textRuResultResponse.textUnique || '';
+        ] = document?.textRuResultResponse?.textUnique || '';
 
         updatedSpreadsheetTableValues[document.wordsCountCoords.yCoord][
           document.wordsCountCoords.xCoord
-        ] = document.wordsCountValue || '';
+        ] = document?.wordsCountValue || '';
       });
 
       const updateTableResult =
