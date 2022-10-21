@@ -10,5 +10,6 @@ import { GoogleController } from './google.controller';
   imports: [PrismaModule, HttpModule],
   providers: [GoogleService],
   controllers: [GoogleController],
+  exports: [GoogleService],
 })
 export class GoogleModule {}
