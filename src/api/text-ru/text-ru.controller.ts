@@ -23,7 +23,7 @@ export class TextRuController {
   @HttpCode(204)
   @Post('text/save')
   public saveFilesResults(
-    @Body() props: TextRuFileResultDto,
+    @Body() props: any,
     @Req() req: any,
   ): Promise<void> {
     console.log(props);
