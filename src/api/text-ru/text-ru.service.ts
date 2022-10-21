@@ -28,7 +28,7 @@ export class TextRuService {
 
   private readonly SECRET_USER_KEY = '7075d2598be0e5ffa5d04829e731fb88';
 
-  private readonly CALLBACK_URL = 'http://37.215.112.81/api/text-ru/text/save';
+  private readonly CALLBACK_URL = 'http://63.250.59.172/api/text-ru/text/save';
 
   private async saveOrUpdateTable(
     tableData: SpreadSheetDataDto,
@@ -356,11 +356,10 @@ export class TextRuService {
 
       await this.db.textRuResult.upsert({
         where: {
-          uid: fileInfo.text_uid,
+          documentId,
         },
         update: {
           uid: fileInfo.text_uid,
-          documentId,
         },
         create: {
           uid: fileInfo.text_uid,
