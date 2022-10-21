@@ -334,6 +334,7 @@ export class TextRuService {
     const bodyFormData = new FormData();
 
     fileKeys.forEach((fileKey) => {
+      console.log(`${fileKey}: `, file[fileKey]);
       bodyFormData.append(fileKey, `${file[fileKey]}`);
     });
 

@@ -109,8 +109,6 @@ export class GoogleService {
 
       const documentContent = documentMetadata.body.content;
 
-      console.log(documentContent);
-
       documentContent.forEach((structuralElement) => {
         if (structuralElement?.paragraph?.elements) {
           const elements = structuralElement.paragraph.elements;
