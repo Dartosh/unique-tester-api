@@ -214,5 +214,57 @@ export class GoogleService {
         },
       },
     });
+
+    try {
+      const spreadsheetTableMetadata = await this.getSpreadsheetMetadata(
+        props.spreadsheetId,
+        props.rangeSheetTitle,
+      );
+
+      const updatedSpreadsheetTableValues = spreadsheetTableMetadata.values;
+
+      spreadsheetTable.documents.forEach((document) => {
+        updatedSpreadsheetTableValues[document.checkStatusCoords.yCoord][
+          document.checkStatusCoords.xCoord
+        ] = document.checkStatus;
+
+        updatedSpreadsheetTableValues[document.eTextResultCoords.yCoord][
+          document.eTextResultCoords.xCoord
+        ] = document.eTextResult;
+
+        updatedSpreadsheetTableValues[document.textRuResultCoords.yCoord][
+          document.textRuResultCoords.xCoord
+        ] = document.textRuResultResponse.textUnique || '';
+
+        updatedSpreadsheetTableValues[document.wordsCountCoords.yCoord][
+          document.wordsCountCoords.xCoord
+        ] = document.wordsCountValue || '';
+      });
+
+      const updateTableResult =
+        await this.googleSheets.spreadsheets.values.batchUpdate({
+          spreadsheetId: props.spreadsheetId,
+          requestBody: {
+            data: [
+              {
+                range: props.rangeSheetTitle,
+                values: updatedSpreadsheetTableValues,
+              },
+            ],
+            valueInputOption: 'USER_ENTERED',
+          },
+        });
+
+      console.log(
+        '\n%d cells updated.',
+        updateTableResult.data.totalUpdatedCells,
+      );
+    } catch (error) {
+      console.log('GoogleUpdateSpreadsheetTableError:\n', error);
+
+      throw new BadRequestException(
+        'Произошла ошибка при обновлении Google-таблицы, проверьте доступ к таблице.',
+      );
+    }
   }
 }

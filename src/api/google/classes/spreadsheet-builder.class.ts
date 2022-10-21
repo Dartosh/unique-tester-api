@@ -167,18 +167,6 @@ export class GoogleSpreadsheetBuilder implements GoogleSheetInterface {
   private getDocumentCell(index: number, header: GoogleSheetHeaderTypeEnum) {
     const currentHeader = this.getHeaderByType(header);
 
-    console.log(
-      '\nCell name:\n',
-      this.tableValues[currentHeader.yCoord + index] &&
-        this.tableValues[currentHeader.yCoord + index][currentHeader.xCoord]
-        ? this.tableValues[currentHeader.yCoord + index][currentHeader.xCoord]
-        : '',
-      '\nCell x:\n',
-      currentHeader.xCoord,
-      '\nCell y:\n',
-      currentHeader.yCoord + index,
-    );
-
     return {
       name:
         this.tableValues[currentHeader.yCoord + index] &&
