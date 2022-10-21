@@ -6,6 +6,6 @@ import * as express from 'express';
 export class UrlencodedBodyMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     console.log('req: ', req);
-    express.urlencoded()(req, res, next);
+    express.urlencoded({ extended: true })(req, res, next);
   }
 }
