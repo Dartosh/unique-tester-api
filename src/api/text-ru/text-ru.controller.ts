@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
 import { TextRuFileResultDto } from './dto/text-ru-file-result.dto';
@@ -22,7 +22,9 @@ export class TextRuController {
   @ApiOkResponse()
   @HttpCode(204)
   @Post('text/save')
-  public saveFilesResults(@Body() props: any): Promise<void> {
+  public saveFilesResults(@Body() props: any, @Req() req: any): Promise<void> {
+    console.log('req: ', req);
+
     return this.textRuService.saveFilesResults(props);
   }
 }
