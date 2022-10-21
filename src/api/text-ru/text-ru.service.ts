@@ -376,7 +376,7 @@ export class TextRuService {
     }
   }
 
-  public async saveFilesResults(props: TextRuFileResultDto): Promise<void> {
+  public async saveFilesResults(props: any): Promise<void> {
     try {
       console.log('Got request: ', props);
 
