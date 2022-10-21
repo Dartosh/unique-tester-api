@@ -22,10 +22,7 @@ export class TextRuController {
   @ApiOkResponse()
   @HttpCode(204)
   @Post('text/save')
-  public saveFilesResults(
-    @Body() props: any,
-    @Req() req: any,
-  ): Promise<void> {
+  public saveFilesResults(@Body() props: TextRuFileResultDto): Promise<void> {
     console.log(props);
 
     return this.textRuService.saveFilesResults(props);

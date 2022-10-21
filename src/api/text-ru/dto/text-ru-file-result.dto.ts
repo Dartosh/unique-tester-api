@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumberString, IsString } from 'class-validator';
 
 export class TextRuFileResultDto {
   @ApiProperty()
@@ -7,8 +7,8 @@ export class TextRuFileResultDto {
   uid: string;
 
   @ApiProperty()
-  @IsNumber()
-  text_unique: number;
+  @IsNumberString()
+  text_unique: string;
 
   @ApiPropertyOptional()
   @IsString()
