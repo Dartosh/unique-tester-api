@@ -30,7 +30,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(RawBodyMiddleware)
       .forRoutes({
-        path: '/cashbox/:path',
+        path: '/text-ru/text/save',
         method: RequestMethod.POST,
       })
       .apply(JsonBodyMiddleware)
