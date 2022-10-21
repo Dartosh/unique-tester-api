@@ -241,6 +241,7 @@ export class TextRuService {
       create: {
         table: { connect: { id: savedTable.id } },
         documentGoogleId: document.documentGoogleId,
+        wordsCountValue: document.wordsCountValue,
         checkStatus: document.checkStatus,
         checkStatusCoords: {
           create: {
