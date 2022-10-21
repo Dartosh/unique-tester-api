@@ -45,10 +45,6 @@ export class GoogleSpreadsheetBuilder implements GoogleSheetInterface {
       });
     });
 
-    console.log('\nTable values:\n', this.tableValues);
-
-    console.log('\nTable headers:\n', this.tableHeaders);
-
     return this;
   }
 
