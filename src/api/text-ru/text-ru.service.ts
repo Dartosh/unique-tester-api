@@ -3,6 +3,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Table } from '@prisma/client';
 
 import { lastValueFrom } from 'rxjs';
+import * as FormData from 'form-data';
 
 import { PrismaService } from 'src/modules/db';
 import { GoogleSpreadsheetBuilder } from '../google/classes/spreadsheet-builder.class';
@@ -334,8 +335,7 @@ export class TextRuService {
     const bodyFormData = new FormData();
 
     fileKeys.forEach((fileKey) => {
-      console.log(`${fileKey}: `, file[fileKey]);
-      bodyFormData.append(fileKey, `${file[fileKey]}`);
+      bodyFormData.append(fileKey, String(file[fileKey]));
     });
 
     return bodyFormData;
