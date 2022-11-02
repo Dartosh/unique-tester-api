@@ -30,7 +30,7 @@ export class TextRuService {
 
   private readonly CALLBACK_URL = 'http://63.250.59.172/api/text-ru/text/save';
 
-  private async saveOrUpdateTable(
+  public async saveOrUpdateTable(
     tableData: SpreadSheetDataDto,
     spreasheet: GoogleSpreadsheetBuilder,
   ): Promise<Table> {
@@ -184,7 +184,7 @@ export class TextRuService {
     return savedTable;
   }
 
-  private async saveOrUpdateDocument(
+  public async saveOrUpdateDocument(
     document: GoogleDocumentMetadataInterface,
     savedTable: Table,
   ) {

@@ -11,5 +11,6 @@ import { GoogleModule } from '../google/google.module';
   imports: [PrismaModule, HttpModule, GoogleModule],
   providers: [TextRuService],
   controllers: [TextRuController],
+  exports: [TextRuService],
 })
 export class TextRuModule {}

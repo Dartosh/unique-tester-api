@@ -13,6 +13,7 @@ import { GoogleModule } from './google/google.module';
 import appConfig from 'src/config/app.config';
 import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
 import { UrlencodedBodyMiddleware } from 'src/middleware/urlencoded-body.middleware';
+import { EtxtModule } from './etxt/etxt.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UrlencodedBodyMiddleware } from 'src/middleware/urlencoded-body.middlew
     }),
     TextRuModule,
     GoogleModule,
+    EtxtModule,
   ],
   controllers: [AppController],
   providers: [AppService],
