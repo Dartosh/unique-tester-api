@@ -23,7 +23,7 @@ export class EtxtController {
     return 'ok';
   }
 
-  @Post('/text/:filepath')
+  @Get('/text/:filepath')
   public getFileByPath(@Param('filepath') path: string, @Res() res: any): void {
     return res.sendFile(path, { root: FILE_DESTINATION });
   }

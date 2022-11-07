@@ -109,7 +109,15 @@ export class EtxtService {
       encryptedXml,
     );
 
-    const eTxtRequest = this.httpService.post(this.getFullRequestUrl(fileName));
+    const eTxtRequest = this.httpService.post(
+      this.getFullRequestUrl(fileName),
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      },
+    );
 
     try {
       const response = await lastValueFrom(eTxtRequest);
