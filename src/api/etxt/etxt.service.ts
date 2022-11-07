@@ -101,7 +101,7 @@ export class EtxtService {
 
     // const iv = randomBytes(16);
 
-    const encryptedXml = await this.encryptXmlFile(resultXml);
+    const encryptedXml = this.encryptXmlFile(resultXml);
 
     const fileName = uid.uid(16);
 
@@ -169,7 +169,7 @@ export class EtxtService {
     }
   }
 
-  private async encryptXmlFile(xml: string): Promise<string> {
+  private encryptXmlFile(xml: string): string {
     // const key = (await promisify(scrypt)(
     //   this.configService.get('E_TXT_SECRET_KEY'),
     //   'salt',
