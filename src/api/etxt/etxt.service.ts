@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipher, scrypt } from 'crypto';
-import { promisify } from 'util';
+import { createCipheriv, scrypt } from 'crypto';
+// import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
 import { PrismaService } from 'src/modules/db';
@@ -169,17 +169,30 @@ export class EtxtService {
     }
   }
 
-  private async encryptXmlFile(xml: string): Promise<Buffer> {
-    const key = (await promisify(scrypt)(
+  private async encryptXmlFile(xml: string): Promise<string> {
+    // const key = (await promisify(scrypt)(
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   'salt',
+    //   32,
+    // )) as Buffer;
+
+    // const cipher = createCipher('aes-256-ctr', key);
+
+    // const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
+
+    // return encryptedText;
+
+    const cipher = createCipheriv(
+      'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
-      'salt',
-      32,
-    )) as Buffer;
+      null,
+    );
 
-    const cipher = createCipher('aes-256-ctr', key);
+    const encrypted = Buffer.concat([
+      cipher.update(xml),
+      cipher.final(),
+    ]).toString('base64');
 
-    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    return encryptedText;
+    return encrypted;
   }
 }
