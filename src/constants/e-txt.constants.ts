@@ -1,1 +1,1 @@
-export const FILE_DESTINATION = 'files';
+export const FILE_DESTINATION = '../files';

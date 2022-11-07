@@ -104,11 +104,11 @@ export class EtxtService {
     const fileName = uid.uid(16);
 
     fs.writeFileSync(
-      path.join(__dirname, '..', '..', '..', FILE_DESTINATION, fileName),
+      path.join(__dirname, '..', '..', FILE_DESTINATION, fileName),
       encryptedXml,
     );
 
-    return resultXml;
+    return fileName;
   }
 
   private async configureAndSaveETxtResult(
