@@ -14,6 +14,7 @@ import appConfig from 'src/config/app.config';
 import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
 import { UrlencodedBodyMiddleware } from 'src/middleware/urlencoded-body.middleware';
 import { EtxtModule } from './etxt/etxt.module';
+import { XmlBodyMiddleware } from 'src/middleware/xml-body.middleware';
 
 @Module({
   imports: [
@@ -33,6 +34,11 @@ export class AppModule implements NestModule {
       .apply(UrlencodedBodyMiddleware)
       .forRoutes({
         path: '/text-ru/text/save',
+        method: RequestMethod.POST,
+      })
+      .apply(XmlBodyMiddleware)
+      .forRoutes({
+        path: '/e-txt/text/save',
         method: RequestMethod.POST,
       })
       .apply(JsonBodyMiddleware)
