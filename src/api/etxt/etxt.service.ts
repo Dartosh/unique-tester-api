@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
 import { createCipheriv, scrypt } from 'crypto';
-// import { promisify } from 'util';
+import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
 import { PrismaService } from 'src/modules/db';
@@ -101,13 +101,13 @@ export class EtxtService {
 
     // const iv = randomBytes(16);
 
-    const encryptedXml = this.encryptXmlFile(resultXml);
+    const encryptedXml = await this.encryptXmlFile(resultXml);
 
     const fileName = `${uid.uid(16)}.xml`;
 
     fs.writeFileSync(
       path.join(__dirname, '..', '..', FILE_DESTINATION, fileName),
-      resultXml,
+      encryptedXml,
     );
 
     const params = new URLSearchParams({
@@ -169,30 +169,33 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): string {
-    // const key = (await promisify(scrypt)(
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   'salt',
-    //   32,
-    // )) as Buffer;
-
-    // const cipher = createCipher('aes-256-ctr', key);
-
-    // const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    // return encryptedText;
-
-    const cipher = createCipheriv(
-      'aes-128-ecb',
+  private async encryptXmlFile(xml: string): Promise<string> {
+    const key = (await promisify(scrypt)(
       this.configService.get('E_TXT_SECRET_KEY'),
-      null,
-    );
+      'salt',
+      32,
+    )) as Buffer;
 
-    const encrypted = Buffer.concat([
+    const cipher = createCipheriv('aes-256-ctr', key, null);
+
+    const encryptedText = Buffer.concat([
       cipher.update(xml),
       cipher.final(),
     ]).toString('base64');
 
-    return encrypted;
+    return encryptedText;
+
+    // const cipher = createCipheriv(
+    //   'aes-128-ecb',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   null,
+    // );
+
+    // const encrypted = Buffer.concat([
+    //   cipher.update(xml),
+    //   cipher.final(),
+    // ]).toString('base64');
+
+    // return encrypted;
   }
 }
