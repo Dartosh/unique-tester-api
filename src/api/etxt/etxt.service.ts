@@ -15,6 +15,7 @@ import * as xmlbuilder from 'xmlbuilder';
 import { GoogleDocumentMetadataInterface } from '../google/interfaces/google-doc-metadata.interface';
 import { ConfigService } from '@nestjs/config';
 import { FILE_DESTINATION } from 'src/constants/e-txt.constants';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class EtxtService {
@@ -107,6 +108,16 @@ export class EtxtService {
       path.join(__dirname, '..', '..', FILE_DESTINATION, fileName),
       encryptedXml,
     );
+
+    const eTxtRequest = this.httpService.post(this.getFullRequestUrl(fileName));
+
+    try {
+      const response = await lastValueFrom(eTxtRequest);
+
+      console.log('response:\n', response);
+    } catch (error) {
+      console.log('error:\n', error);
+    }
 
     return fileName;
   }
