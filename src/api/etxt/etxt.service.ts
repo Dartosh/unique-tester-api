@@ -114,7 +114,7 @@ export class EtxtService {
     try {
       const response = await lastValueFrom(eTxtRequest);
 
-      console.log('response:\n', response);
+      console.log('response:\n', response?.data);
     } catch (error) {
       console.log('error:\n', error);
     }
