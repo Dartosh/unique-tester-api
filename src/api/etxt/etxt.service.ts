@@ -103,10 +103,10 @@ export class EtxtService {
 
     const encryptedXml = this.encryptXmlFile(resultXml);
 
-    const fileName = uid.uid(16);
+    const fileName = `${uid.uid(16)}.xml`;
 
     fs.writeFileSync(
-      path.join(__dirname, '..', '..', FILE_DESTINATION, `${fileName}.xml`),
+      path.join(__dirname, '..', '..', FILE_DESTINATION, fileName),
       encryptedXml,
     );
 
