@@ -41,7 +41,7 @@ export class EtxtService {
     'http://63.250.59.172/api/e-txt/text/save';
 
   private readonly getFileUrl = (fileName: string) =>
-    `http://63.250.59.172/api/e-txt/text/${fileName}.xml`;
+    `http://63.250.59.172/api/e-txt/text/${fileName}`;
 
   private readonly getFullRequestUrl = (fileName: string) =>
     `${this.E_TXT_URL}?xmlUrl=${encodeURIComponent(
@@ -104,13 +104,11 @@ export class EtxtService {
     const fileName = uid.uid(16);
 
     fs.writeFileSync(
-      path.join(__dirname, FILE_DESTINATION, `${fileName}`),
+      path.join(__dirname, '..', '..', '..', FILE_DESTINATION, fileName),
       encryptedXml,
     );
 
-    return {
-      data: encryptedXml,
-    };
+    return resultXml;
   }
 
   private async configureAndSaveETxtResult(

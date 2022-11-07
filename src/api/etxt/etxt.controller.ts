@@ -18,7 +18,7 @@ export class EtxtController {
   @ApiOkResponse()
   @Post('text/save')
   public saveETxtResults(@Req() req: any): string {
-    console.log('saveRequest', req);
+    console.log('saveRequest:\n', req);
 
     return 'ok';
   }
