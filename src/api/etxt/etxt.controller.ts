@@ -16,7 +16,7 @@ export class EtxtController {
     return this.etxtService.uploadFilesETxt(props);
   }
 
-  @ApiOkResponse()
+  // @ApiOkResponse()
   @Post('text/save')
   public saveETxtResults(@Req() req: any): string {
     console.log('saveRequest:\n', req);
@@ -26,6 +26,7 @@ export class EtxtController {
 
   @Get('/text/:filepath')
   public getFileByPath(@Param('filepath') path: string, @Res() res: any): void {
+    console.log('Get file: ', path);
     return res.sendFile(path, { root: FILE_DESTINATION });
   }
 
