@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as uid from 'uid';
 import { createCipher, scrypt } from 'crypto';
 import { promisify } from 'util';
+import { URLSearchParams } from 'url';
 
 import { PrismaService } from 'src/modules/db';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
@@ -109,9 +110,14 @@ export class EtxtService {
       encryptedXml,
     );
 
+    const params = new URLSearchParams({
+      xmlUrl: this.getFileUrl(fileName),
+      xmlAnswerUrl: this.SAVE_RESULTS_URL,
+    });
+
     const eTxtRequest = this.httpService.post(
-      this.getFullRequestUrl(fileName),
-      {},
+      this.E_TXT_URL,
+      params.toString(),
       {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
