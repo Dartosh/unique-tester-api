@@ -185,7 +185,7 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): any {
+  private encryptXmlFile(xml: string): Buffer {
     // const key = (await promisify(scrypt)(
     //   this.configService.get('E_TXT_SECRET_KEY'),
     //   'salt',
@@ -200,6 +200,7 @@ export class EtxtService {
     // ]).toString('base64');
 
     // return encryptedText;
+    let xmlString = xml;
 
     const cipher = createCipheriv(
       'aes-128-ecb',
@@ -207,9 +208,13 @@ export class EtxtService {
       null,
     );
 
-    cipher.setEncoding('binary');
+    cipher.setAutoPadding(false);
 
-    console.log(cipher.final());
+    if (xmlString.length % 16 !== 0) {
+      for (let i = 0; i < xmlString.length % 16; i++) {
+        xmlString += '\0';
+      }
+    }
 
     const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
