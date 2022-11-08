@@ -232,7 +232,7 @@ export class EtxtService {
       this.configService.get('E_TXT_SECRET_KEY'),
     ).setAutoPadding(false);
 
-    const xmlBuffer = this.customPadding(xml, 128, 0x0);
+    const xmlBuffer = this.customPadding(xml, 128, 0x001);
 
     const encryptedXml = cipher.update(xmlBuffer);
 
