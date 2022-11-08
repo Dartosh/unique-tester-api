@@ -105,22 +105,21 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    // fs.writeFileSync(
-    //   path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-    //   encryptedXml,
-    //   'binary',
-    // );
-
-    const wstream = fs.createWriteStream(
-      path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
-      {
-        encoding: 'binary',
-      },
+    fs.writeFileSync(
+      path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
+      encryptedXml,
     );
 
-    wstream.write(encryptedXml, 'binary');
+    // const wstream = fs.createWriteStream(
+    //   path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
+    //   {
+    //     encoding: 'binary',
+    //   },
+    // );
 
-    wstream.end();
+    // wstream.write(encryptedXml, 'binary');
+
+    // wstream.end();
 
     // fs.writeFileSync(
     //   path.join(__dirname, '..', '..', FILE_DESTINATION, `encoded.xml`),
@@ -209,6 +208,8 @@ export class EtxtService {
     );
 
     cipher.setEncoding('binary');
+
+    console.log(cipher.final());
 
     const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
