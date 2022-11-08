@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipher, scrypt } from 'crypto';
+import { createCipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
@@ -202,14 +202,17 @@ export class EtxtService {
 
     // return encryptedText;
 
-    const cipher = createCipher(
+    const cipher = createCipheriv(
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
+      null,
     );
 
-    cipher.setAutoPadding(true);
+    cipher.setEncoding('binary');
 
     const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
+
+    console.log('Encrypted length: ', encrypted.length);
 
     return encrypted;
   }
