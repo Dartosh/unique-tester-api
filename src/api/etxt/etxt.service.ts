@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipher, scrypt } from 'crypto';
+import { createCipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
@@ -200,29 +200,61 @@ export class EtxtService {
     // ]).toString('base64');
 
     // return encryptedText;
-    let xmlString = xml;
+    // let xmlString = xml;
 
-    const cipher = createCipher(
-      'aes-128-ecb',
+    // const cipher = createCipher(
+    //   'aes-128-ecb',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   // null,
+    // );
+
+    // cipher.setAutoPadding(false);
+
+    // if (xmlString.length % 16 !== 0) {
+    //   for (let i = 0; i < xmlString.length % 16; i++) {
+    //     xmlString += '\0';
+    //   }
+    // }
+
+    // const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
+
+    // // const encrypted = cipher.update(xmlString);
+
+    // console.log('Encrypted length: ', encrypted.length);
+    // console.log('Raw length: ', xmlString.length);
+
+    // return encrypted;
+
+    // let xmlString = xml;
+
+    const cipher = createCipheriv(
+      'aes-256-cbc',
       this.configService.get('E_TXT_SECRET_KEY'),
-      // null,
-    );
+      null,
+    ).setAutoPadding(false);
 
-    cipher.setAutoPadding(false);
+    const xmlBuffer = this.customPadding(xml, 128, 0x0);
 
-    if (xmlString.length % 16 !== 0) {
-      for (let i = 0; i < xmlString.length % 16; i++) {
-        xmlString += '\0';
+    const encryptedXml = cipher.update(xmlBuffer);
+
+    return Buffer.concat([encryptedXml, cipher.final()]);
+  }
+
+  private customPadding(str: string, blockSize: number, padder: any) {
+    let resultStr = new Buffer(str);
+
+    //1 char = 8bytes
+    const bitLength = str.length * 8;
+
+    if (bitLength < blockSize) {
+      for (let i = bitLength; i < blockSize; i += 8) {
+        resultStr += padder;
+      }
+    } else if (bitLength > blockSize) {
+      while ((str.length * 8) % blockSize != 0) {
+        resultStr += padder;
       }
     }
-
-    const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
-
-    // const encrypted = cipher.update(xmlString);
-
-    console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xmlString.length);
-
-    return encrypted;
+    return new Buffer(resultStr);
   }
 }
