@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipheriv, scrypt } from 'crypto';
+import { createCipher, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
@@ -227,10 +227,9 @@ export class EtxtService {
 
     // let xmlString = xml;
 
-    const cipher = createCipheriv(
+    const cipher = createCipher(
       'aes-256-cbc',
       this.configService.get('E_TXT_SECRET_KEY'),
-      null,
     ).setAutoPadding(false);
 
     const xmlBuffer = this.customPadding(xml, 128, 0x0);
@@ -255,6 +254,7 @@ export class EtxtService {
         resultStr += padder;
       }
     }
+
     return new Buffer(resultStr);
   }
 }
