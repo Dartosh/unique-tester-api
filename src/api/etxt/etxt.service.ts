@@ -105,22 +105,22 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    fs.writeFileSync(
-      path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-      encryptedXml,
-      'binary',
-    );
-
-    // const wstream = fs.createWriteStream(
-    //   path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
-    //   {
-    //     encoding: 'binary',
-    //   },
+    // fs.writeFileSync(
+    //   path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
+    //   encryptedXml,
+    //   'binary',
     // );
 
-    // wstream.write(encryptedXml, 'binary');
+    const wstream = fs.createWriteStream(
+      path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
+      {
+        encoding: 'binary',
+      },
+    );
 
-    // wstream.end();
+    wstream.write(encryptedXml, 'binary');
+
+    wstream.end();
 
     // fs.writeFileSync(
     //   path.join(__dirname, '..', '..', FILE_DESTINATION, `encoded.xml`),
