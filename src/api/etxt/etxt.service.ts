@@ -103,12 +103,29 @@ export class EtxtService {
 
     const encryptedXml = this.encryptXmlFile(resultXml);
 
-    const fileName = `${uid.uid(16)}.xml`;
+    const fileName = uid.uid(16);
 
     fs.writeFileSync(
-      path.join(__dirname, '..', '..', FILE_DESTINATION, fileName),
+      path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
+      'binary',
     );
+
+    // const wstream = fs.createWriteStream(
+    //   path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
+    //   {
+    //     encoding: 'binary',
+    //   },
+    // );
+
+    // wstream.write(encryptedXml, 'binary');
+
+    // wstream.end();
+
+    // fs.writeFileSync(
+    //   path.join(__dirname, '..', '..', FILE_DESTINATION, `encoded.xml`),
+    //   encryptedXml,
+    // );
 
     const params = new URLSearchParams({
       xmlUrl: this.getFileUrl(fileName),
@@ -169,7 +186,7 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): string {
+  private encryptXmlFile(xml: string): any {
     // const key = (await promisify(scrypt)(
     //   this.configService.get('E_TXT_SECRET_KEY'),
     //   'salt',
@@ -191,10 +208,7 @@ export class EtxtService {
       null,
     );
 
-    const encrypted = Buffer.concat([
-      cipher.update(xml),
-      cipher.final(),
-    ]).toString('base64');
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     return encrypted;
   }
