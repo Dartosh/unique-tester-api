@@ -208,7 +208,7 @@ export class EtxtService {
       // null,
     );
 
-    cipher.setAutoPadding(true);
+    cipher.setAutoPadding(false);
 
     if (xmlString.length % 16 !== 0) {
       for (let i = 0; i < xmlString.length % 16; i++) {
