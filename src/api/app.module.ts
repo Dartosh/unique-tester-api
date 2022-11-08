@@ -32,15 +32,16 @@ export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(UrlencodedBodyMiddleware)
-      .forRoutes({
-        path: '/text-ru/text/save',
-        method: RequestMethod.POST,
-      })
-      .apply(XmlBodyMiddleware)
-      .forRoutes({
-        path: '/e-txt/text/save',
-        method: RequestMethod.POST,
-      })
+      .forRoutes(
+        {
+          path: '/text-ru/text/save',
+          method: RequestMethod.POST,
+        },
+        {
+          path: '/e-txt/text/save',
+          method: RequestMethod.POST,
+        },
+      )
       .apply(JsonBodyMiddleware)
       .forRoutes('*');
   }
