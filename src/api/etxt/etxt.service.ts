@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipher, scrypt } from 'crypto';
+import { createCipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
@@ -101,7 +101,7 @@ export class EtxtService {
 
     // const iv = randomBytes(16);
 
-    const encryptedXml = this.encryptXmlFile(resultXml);
+    const encryptedXml = await this.encryptXmlFile(resultXml);
 
     const fileName = uid.uid(16);
 
@@ -185,51 +185,51 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): Buffer {
-    // const key = (await promisify(scrypt)(
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   'salt',
-    //   32,
-    // )) as Buffer;
-
-    // const cipher = createCipheriv('aes-256-ctr', key, null);
-
-    // const encryptedText = Buffer.concat([
-    //   cipher.update(xml),
-    //   cipher.final(),
-    // ]).toString('base64');
-
-    // return encryptedText;
-    let xmlString = xml;
-
-    const cipher = createCipher(
-      'aes-128-ecb',
+  private async encryptXmlFile(xml: string): Promise<Buffer> {
+    const key = (await promisify(scrypt)(
       this.configService.get('E_TXT_SECRET_KEY'),
-      // null,
-    ).setAutoPadding(true);
+      'salt',
+      16,
+    )) as Buffer;
+
+    const cipher = createCipheriv('aes-256-ctr', key, null).setAutoPadding(
+      true,
+    );
+
+    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
+
+    return encryptedText;
+
+    // let xmlString = xml;
+
+    // const cipher = createCipher(
+    //   'aes-128-ecb',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   // null,
+    // ).setAutoPadding(true);
 
     // cipher.setAutoPadding(false);
 
-    if (xmlString.length % 16 !== 0) {
-      for (let i = 0; i < xmlString.length % 16; i++) {
-        xmlString += '\0';
-      }
-    }
+    // if (xmlString.length % 16 !== 0) {
+    //   for (let i = 0; i < xmlString.length % 16; i++) {
+    //     xmlString += '\0';
+    //   }
+    // }
 
-    const encrypted = cipher.update(xmlString);
+    // const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
 
-    // const encrypted = cipher.update(xmlString);
+    // // const encrypted = cipher.update(xmlString);
 
-    console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xmlString.length);
-    console.log(
-      'Key: ',
-      this.configService.get('E_TXT_SECRET_KEY'),
-      '-',
-      this.configService.get('E_TXT_SECRET_KEY').length,
-    );
+    // console.log('Encrypted length: ', encrypted.length);
+    // console.log('Raw length: ', xmlString.length);
+    // console.log(
+    //   'Key: ',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   '-',
+    //   this.configService.get('E_TXT_SECRET_KEY').length,
+    // );
 
-    return encrypted;
+    // return encrypted;
 
     // let xmlString = xml;
 
