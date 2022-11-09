@@ -203,7 +203,7 @@ export class EtxtService {
     // let xmlString = xml;
 
     const cipher = createCipher(
-      'aes-128-ccm',
+      'aes-128-cbc',
       this.configService.get('E_TXT_SECRET_KEY'),
       // null,
     ).setAutoPadding(true);
