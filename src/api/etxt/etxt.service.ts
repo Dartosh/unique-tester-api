@@ -186,46 +186,46 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
-    // const cipher = createCipher(
-    //   'aes-128-ecb',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   // null,
-    // ).setAutoPadding(true);
-
-    // const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    // console.log('Encrypted length: ', encrypted.length);
-    // console.log('Raw length: ', xml.length);
-    // console.log(
-    //   'Key: ',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   '-',
-    //   this.configService.get('E_TXT_SECRET_KEY').length,
-    // );
-
-    // return encrypted;
-
-    const textToEncrypt = xml.toString();
-
-    const key = Buffer.from(
-      this.configService.get('E_TXT_SECRET_KEY') as string,
-      'utf-8',
-    );
-
-    const plainText = Buffer.from(textToEncrypt, 'utf8');
-
     const cipher = createCipheriv(
       'aes-128-ecb',
-      key,
+      this.configService.get('E_TXT_SECRET_KEY'),
       Buffer.from([]),
     ).setAutoPadding(true);
 
-    const cipherText = Buffer.concat([
-      cipher.update(plainText),
-      cipher.final(),
-    ]);
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
-    return cipherText;
+    console.log('Encrypted length: ', encrypted.length);
+    console.log('Raw length: ', xml.length);
+    console.log(
+      'Key: ',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      '-',
+      this.configService.get('E_TXT_SECRET_KEY').length,
+    );
+
+    return encrypted;
+
+    // const textToEncrypt = xml.toString();
+
+    // const key = Buffer.from(
+    //   this.configService.get('E_TXT_SECRET_KEY') as string,
+    //   'utf-8',
+    // );
+
+    // const plainText = Buffer.from(textToEncrypt, 'utf8');
+
+    // const cipher = createCipheriv(
+    //   'aes-128-ecb',
+    //   key,
+    //   Buffer.from([]),
+    // ).setAutoPadding(true);
+
+    // const cipherText = Buffer.concat([
+    //   cipher.update(plainText),
+    //   cipher.final(),
+    // ]);
+
+    // return cipherText;
   }
 
   private customPadding(str: string, blockSize: number, padder: any) {
