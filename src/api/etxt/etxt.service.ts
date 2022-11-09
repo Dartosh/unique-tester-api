@@ -200,7 +200,7 @@ export class EtxtService {
     // ]).toString('base64');
 
     // return encryptedText;
-    // let xmlString = xml;
+    let xmlString = xml;
 
     const cipher = createCipher(
       'aes-128-ecb',
@@ -210,18 +210,18 @@ export class EtxtService {
 
     // cipher.setAutoPadding(false);
 
-    // if (xmlString.length % 16 !== 0) {
-    //   for (let i = 0; i < xmlString.length % 16; i++) {
-    //     xmlString += '\0';
-    //   }
-    // }
+    if (xmlString.length % 16 !== 0) {
+      for (let i = 0; i < xmlString.length % 16; i++) {
+        xmlString += '\0';
+      }
+    }
 
-    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
 
     // const encrypted = cipher.update(xmlString);
 
     console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xml.length);
+    console.log('Raw length: ', xmlString.length);
 
     return encrypted;
 
