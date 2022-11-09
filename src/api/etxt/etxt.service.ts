@@ -186,11 +186,19 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
+    let xmlString = xml;
+
     const cipher = createCipheriv(
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
       Buffer.from([]),
     ).setAutoPadding(true);
+
+    if (xmlString.length % 16 !== 0) {
+      for (let i = 0; i < xmlString.length % 16; i++) {
+        xmlString += '\0';
+      }
+    }
 
     const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
