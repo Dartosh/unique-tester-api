@@ -222,6 +222,12 @@ export class EtxtService {
 
     console.log('Encrypted length: ', encrypted.length);
     console.log('Raw length: ', xmlString.length);
+    console.log(
+      'Key: ',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      '-',
+      this.configService.get('E_TXT_SECRET_KEY').length,
+    );
 
     return encrypted;
 
