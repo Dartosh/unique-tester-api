@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipheriv, scrypt } from 'crypto';
+import { createCipher, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
@@ -185,28 +185,28 @@ export class EtxtService {
     }
   }
 
-  private async encryptXmlFile(xml: string): Promise<Buffer> {
-    const key = (await promisify(scrypt)(
-      this.configService.get('E_TXT_SECRET_KEY'),
-      'salt',
-      16,
-    )) as Buffer;
+  private encryptXmlFile(xml: string): Buffer {
+    // const key = (await promisify(scrypt)(
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   'salt',
+    //   16,
+    // )) as Buffer;
 
-    const cipher = createCipheriv('aes-256-ctr', key, null).setAutoPadding(
-      true,
-    );
+    // const cipher = createCipheriv('aes-256-ctr', key, null).setAutoPadding(
+    //   true,
+    // );
 
-    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
+    // const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
 
-    return encryptedText;
+    // return encryptedText;
 
     // let xmlString = xml;
 
-    // const cipher = createCipher(
-    //   'aes-128-ecb',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   // null,
-    // ).setAutoPadding(true);
+    const cipher = createCipher(
+      'aes-128-ccm',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      // null,
+    ).setAutoPadding(true);
 
     // cipher.setAutoPadding(false);
 
@@ -216,20 +216,20 @@ export class EtxtService {
     //   }
     // }
 
-    // const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     // // const encrypted = cipher.update(xmlString);
 
-    // console.log('Encrypted length: ', encrypted.length);
-    // console.log('Raw length: ', xmlString.length);
-    // console.log(
-    //   'Key: ',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   '-',
-    //   this.configService.get('E_TXT_SECRET_KEY').length,
-    // );
+    console.log('Encrypted length: ', encrypted.length);
+    console.log('Raw length: ', xml.length);
+    console.log(
+      'Key: ',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      '-',
+      this.configService.get('E_TXT_SECRET_KEY').length,
+    );
 
-    // return encrypted;
+    return encrypted;
 
     // let xmlString = xml;
 
