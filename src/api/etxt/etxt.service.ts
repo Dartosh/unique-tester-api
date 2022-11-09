@@ -214,7 +214,11 @@ export class EtxtService {
 
     const plainText = Buffer.from(textToEncrypt, 'utf8');
 
-    const cipher = createCipheriv('aes-128-ecb', key, Buffer.from([]));
+    const cipher = createCipheriv(
+      'aes-128-ecb',
+      key,
+      Buffer.from([]),
+    ).setAutoPadding(true);
 
     const cipherText = Buffer.concat([
       cipher.update(plainText),
