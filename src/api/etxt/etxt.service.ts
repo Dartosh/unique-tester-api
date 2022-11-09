@@ -202,11 +202,11 @@ export class EtxtService {
     // return encryptedText;
     // let xmlString = xml;
 
-    // const cipher = createCipher(
-    //   'aes-128-ecb',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   // null,
-    // );
+    const cipher = createCipher(
+      'aes-128-ecb',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      // null,
+    ).setAutoPadding(true);
 
     // cipher.setAutoPadding(false);
 
@@ -216,27 +216,27 @@ export class EtxtService {
     //   }
     // }
 
-    // const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
-    // // const encrypted = cipher.update(xmlString);
+    // const encrypted = cipher.update(xmlString);
 
-    // console.log('Encrypted length: ', encrypted.length);
-    // console.log('Raw length: ', xmlString.length);
+    console.log('Encrypted length: ', encrypted.length);
+    console.log('Raw length: ', xml.length);
 
-    // return encrypted;
+    return encrypted;
 
     // let xmlString = xml;
 
-    const cipher = createCipher(
-      'aes-256-cbc',
-      this.configService.get('E_TXT_SECRET_KEY'),
-    ).setAutoPadding(false);
+    // const cipher = createCipher(
+    //   'aes-256-cbc',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    // ).setAutoPadding(false);
 
-    const xmlBuffer = this.customPadding(xml, 128, 0x001);
+    // const xmlBuffer = this.customPadding(xml, 128, 0x001);
 
-    const encryptedXml = cipher.update(xmlBuffer);
+    // const encryptedXml = cipher.update(xmlBuffer);
 
-    return Buffer.concat([encryptedXml, cipher.final()]);
+    // return Buffer.concat([encryptedXml, cipher.final()]);
   }
 
   private customPadding(str: string, blockSize: number, padder: any) {
