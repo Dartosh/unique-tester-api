@@ -221,11 +221,11 @@ export class EtxtService {
 
     // return encrypted;
 
-    let xmlString = xml;
+    let xmlString = '';
 
     while (xmlString.length % 16 !== 0) {
       // eslint-disable-next-line prettier/prettier
-      xmlString += '\e';
+      xmlString += /\cC/;
     }
 
     const key = (await promisify(scrypt)(
@@ -238,15 +238,12 @@ export class EtxtService {
       'aes-128-ecb',
       key,
       Buffer.from([]),
-    ).setAutoPadding(false);
+    ).setAutoPadding(true);
 
-    const encryptedText = Buffer.concat([
-      cipher.update(xmlString),
-      cipher.final(),
-    ]);
+    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     console.log('Encrypted length: ', encryptedText.length);
-    console.log('Raw length: ', xmlString.length);
+    console.log('Raw length: ', xml.length);
     console.log(
       'Key: ',
       this.configService.get('E_TXT_SECRET_KEY'),
