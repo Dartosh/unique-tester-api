@@ -110,6 +110,7 @@ export class EtxtService {
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
+      'binary',
     );
 
     // fs.writeFileSync(
@@ -193,24 +194,24 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
-    let xmlString = xml.replace('\n', '');
+    // let xmlString = xml.replace('\n', '');
 
     const cipher = createCipheriv(
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
       Buffer.from([]),
-    ).setAutoPadding(false);
+    ).setAutoPadding(true);
 
-    while (xmlString.length % 16 !== 0) {
-      xmlString += ' ';
-    }
+    // while (xmlString.length % 16 !== 0) {
+    //   xmlString += ' ';
+    // }
 
-    const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     // const encrypted = cipher.update(xmlString);
 
     console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xmlString.length);
+    console.log('Raw length: ', xml.length);
     console.log(
       'Key: ',
       this.configService.get('E_TXT_SECRET_KEY'),
