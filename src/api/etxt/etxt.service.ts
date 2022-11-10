@@ -224,7 +224,7 @@ export class EtxtService {
     let xmlString = xml;
 
     while (xmlString.length % 16 !== 0) {
-      xmlString += ' ';
+      xmlString += '\n';
     }
 
     const key = (await promisify(scrypt)(
@@ -243,6 +243,15 @@ export class EtxtService {
       cipher.update(xmlString),
       cipher.final(),
     ]);
+
+    console.log('Encrypted length: ', encryptedText.length);
+    console.log('Raw length: ', xmlString.length);
+    console.log(
+      'Key: ',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      '-',
+      this.configService.get('E_TXT_SECRET_KEY').length,
+    );
 
     return encryptedText;
   }
