@@ -201,7 +201,7 @@ export class EtxtService {
     // }
 
     while (xmlString.length % 16 !== 0) {
-      xmlString += '\0';
+      xmlString += ' ';
     }
 
     xmlString = xmlString.toString();
