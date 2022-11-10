@@ -224,7 +224,7 @@ export class EtxtService {
     const key = (await promisify(scrypt)(
       this.configService.get('E_TXT_SECRET_KEY'),
       'salt',
-      32,
+      16,
     )) as Buffer;
 
     const cipher = createCipheriv(
