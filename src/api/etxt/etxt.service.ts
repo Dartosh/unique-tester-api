@@ -1,4 +1,5 @@
 import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 
 import * as fs from 'fs';
@@ -7,16 +8,15 @@ import * as uid from 'uid';
 import { createCipheriv, createDecipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
+import { lastValueFrom } from 'rxjs';
+import * as xmlbuilder from 'xmlbuilder';
 
 import { PrismaService } from 'src/modules/db';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
 import { GoogleService } from '../google/google.service';
 import { TextRuService } from '../text-ru/text-ru.service';
-import * as xmlbuilder from 'xmlbuilder';
 import { GoogleDocumentMetadataInterface } from '../google/interfaces/google-doc-metadata.interface';
-import { ConfigService } from '@nestjs/config';
 import { FILE_DESTINATION } from 'src/constants/e-txt.constants';
-import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class EtxtService {

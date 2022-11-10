@@ -1,6 +1,9 @@
 import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { ApiTags, ApiOkResponse } from '@nestjs/swagger';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 import { FILE_DESTINATION } from 'src/constants/e-txt.constants';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
 import { EtxtService } from './etxt.service';
@@ -32,8 +35,18 @@ export class EtxtController {
   }
 
   @Get('/text/:filepath')
-  public getFileByPath(@Param('filepath') path: string, @Res() res: any): void {
+  public getFileByPath(
+    @Param('filepath') filepath: string,
+    @Res() res: any,
+  ): void {
     console.log('Get file: ', path);
+
+    const fileToReturn = fs.readFileSync(
+      path.join(__dirname, '../..', FILE_DESTINATION, `${filepath}`),
+    );
+
+    console.log('File length: ', fileToReturn.length);
+
     return res.sendFile(path, { root: FILE_DESTINATION });
   }
 
