@@ -206,10 +206,12 @@ export class EtxtService {
 
     xmlString = xmlString.toString();
 
-    const encrypted = Buffer.concat([cipher.update(xml)]);
+    // const encrypted = Buffer.concat([cipher.update(xml)]);
+
+    const encrypted = cipher.update(xmlString);
 
     console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xml.length);
+    console.log('Raw length: ', xmlString.length);
     console.log(
       'Key: ',
       this.configService.get('E_TXT_SECRET_KEY'),
