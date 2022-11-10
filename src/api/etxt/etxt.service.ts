@@ -201,6 +201,7 @@ export class EtxtService {
     // }
 
     while (xmlString.length % 16 !== 0) {
+      console.log('\0');
       xmlString += '\0';
     }
 
