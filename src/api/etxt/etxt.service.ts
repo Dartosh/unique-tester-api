@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipheriv, scrypt } from 'crypto';
+import { createCipheriv, createDecipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 
@@ -103,11 +103,18 @@ export class EtxtService {
 
     const encryptedXml = this.encryptXmlFile(resultXml);
 
+    const decryptedXml = this.decryptXmlFile(encryptedXml);
+
     const fileName = uid.uid(16);
 
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
+    );
+
+    fs.writeFileSync(
+      path.join(__dirname, '../..', FILE_DESTINATION, `d-${fileName}`),
+      decryptedXml,
     );
 
     // const wstream = fs.createWriteStream(
@@ -194,32 +201,11 @@ export class EtxtService {
       Buffer.from([]),
     ).setAutoPadding(false);
 
-    const paddingCipher = createCipheriv(
-      'aes-128-ecb',
-      this.configService.get('E_TXT_SECRET_KEY'),
-      Buffer.from([]),
-    ).setAutoPadding(false);
-
-    // if (xmlString.length % 16 !== 0) {
-    //   for (let i = 0; i < xmlString.length % 16; i++) {
-    //     xmlString += '\0';
-    //   }
-    // }
-
     while (xmlString.length % 16 !== 0) {
       xmlString += '\0';
     }
 
-    // xmlString = xmlString.toString();
-
-    console.log('xmlString:\n', xml);
-
-    const encrypted = Buffer.concat([
-      cipher.update(xml),
-      paddingCipher.update(xmlString),
-    ]);
-
-    // const encrypted = cipher.update(xmlString);
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     console.log('Encrypted length: ', encrypted.length);
     console.log('Raw length: ', xml.length);
@@ -231,28 +217,21 @@ export class EtxtService {
     );
 
     return encrypted;
+  }
 
-    // const textToEncrypt = xml.toString();
+  private decryptXmlFile(xml: Buffer): string {
+    const decipher = createDecipheriv(
+      'aes-128-ecb',
+      this.configService.get('E_TXT_SECRET_KEY'),
+      Buffer.from([]),
+    );
 
-    // const key = Buffer.from(
-    //   this.configService.get('E_TXT_SECRET_KEY') as string,
-    //   'utf-8',
-    // );
+    const decrypted = Buffer.concat([
+      decipher.update(xml),
+      decipher.final(),
+    ]).toString('utf8');
 
-    // const plainText = Buffer.from(textToEncrypt, 'utf8');
-
-    // const cipher = createCipheriv(
-    //   'aes-128-ecb',
-    //   key,
-    //   Buffer.from([]),
-    // ).setAutoPadding(true);
-
-    // const cipherText = Buffer.concat([
-    //   cipher.update(plainText),
-    //   cipher.final(),
-    // ]);
-
-    // return cipherText;
+    return decrypted;
   }
 
   private customPadding(str: string, blockSize: number, padder: any) {
