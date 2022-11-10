@@ -113,7 +113,7 @@ export class EtxtService {
     );
 
     fs.writeFileSync(
-      path.join(__dirname, '../..', FILE_DESTINATION, `d-${fileName}`),
+      path.join(__dirname, '../..', FILE_DESTINATION, `d-${fileName}.txt`),
       decryptedXml,
     );
 
