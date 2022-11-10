@@ -103,7 +103,7 @@ export class EtxtService {
 
     const encryptedXml = this.encryptXmlFile(resultXml);
 
-    const decryptedXml = this.decryptXmlFile(encryptedXml);
+    // const decryptedXml = this.decryptXmlFile(encryptedXml);
 
     const fileName = uid.uid(16);
 
@@ -112,10 +112,10 @@ export class EtxtService {
       encryptedXml,
     );
 
-    fs.writeFileSync(
-      path.join(__dirname, '../..', FILE_DESTINATION, `d-${fileName}.txt`),
-      decryptedXml,
-    );
+    // fs.writeFileSync(
+    //   path.join(__dirname, '../..', FILE_DESTINATION, `d-${fileName}.txt`),
+    //   decryptedXml,
+    // );
 
     // const wstream = fs.createWriteStream(
     //   path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
