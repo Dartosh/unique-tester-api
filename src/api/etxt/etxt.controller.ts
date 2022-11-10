@@ -41,15 +41,15 @@ export class EtxtController {
   ): any {
     console.log('Get file: ', filepath);
 
-    // const fileToReturn = fs.readFileSync(
-    //   path.join(__dirname, '../..', FILE_DESTINATION, `${filepath}`),
-    // );
+    const fileToReturn = fs.readFileSync(
+      path.join(__dirname, '../..', FILE_DESTINATION, `${filepath}`),
+    );
 
     const file = fs.createReadStream(
       path.join(__dirname, '../..', FILE_DESTINATION, `${filepath}`),
     );
 
-    // console.log('File length: ', fileToReturn.length);
+    console.log('File length: ', fileToReturn.length);
 
     // return res.sendFile(filepath, { root: FILE_DESTINATION });
 
