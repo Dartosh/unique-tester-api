@@ -224,7 +224,8 @@ export class EtxtService {
     let xmlString = xml;
 
     while (xmlString.length % 16 !== 0) {
-      xmlString += '\f';
+      // eslint-disable-next-line prettier/prettier
+      xmlString += '\e';
     }
 
     const key = (await promisify(scrypt)(
