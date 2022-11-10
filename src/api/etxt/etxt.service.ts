@@ -193,7 +193,7 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
-    // let xmlString = '';
+    const xmlString = xml.slice(0, -1).replace('\n', '');
 
     const cipher = createCipheriv(
       'aes-128-ecb',
@@ -205,10 +205,10 @@ export class EtxtService {
     //   xmlString += '\0';
     // }
 
-    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xmlString), cipher.final()]);
 
     console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xml.length);
+    console.log('Raw length: ', xmlString.length);
     console.log(
       'Key: ',
       this.configService.get('E_TXT_SECRET_KEY'),
