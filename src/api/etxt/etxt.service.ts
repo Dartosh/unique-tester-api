@@ -206,7 +206,7 @@ export class EtxtService {
 
     xmlString = xmlString.toString();
 
-    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xml)]);
 
     console.log('Encrypted length: ', encrypted.length);
     console.log('Raw length: ', xml.length);
