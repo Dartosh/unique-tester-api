@@ -38,7 +38,7 @@ export class EtxtController {
   public getFileByPath(
     @Param('filepath') filepath: string,
     @Res() res: any,
-  ): void {
+  ): any {
     console.log('Get file: ', path);
 
     const fileToReturn = fs.readFileSync(
@@ -47,7 +47,9 @@ export class EtxtController {
 
     console.log('File length: ', fileToReturn.length);
 
-    return res.sendFile(path, { root: FILE_DESTINATION });
+    // return res.sendFile(filepath, { root: FILE_DESTINATION });
+
+    return fileToReturn;
   }
 
   //   @ApiOkResponse()
