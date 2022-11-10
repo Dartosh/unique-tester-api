@@ -224,7 +224,7 @@ export class EtxtService {
     let xmlString = xml;
 
     while (xmlString.length % 16 !== 0) {
-      xmlString += '\0';
+      xmlString += ' ';
     }
 
     const key = (await promisify(scrypt)(
