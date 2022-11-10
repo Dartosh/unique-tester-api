@@ -101,7 +101,7 @@ export class EtxtService {
 
     // const iv = randomBytes(16);
 
-    const encryptedXml = this.encryptXmlFile(resultXml);
+    const encryptedXml = await this.encryptXmlFile(resultXml);
 
     // const decryptedXml = this.decryptXmlFile(encryptedXml);
 
@@ -193,33 +193,49 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): Buffer {
-    let xmlString = xml.replace('\n', '');
+  private async encryptXmlFile(xml: string): Promise<Buffer> {
+    // let xmlString = xml.replace('\n', '');
+
+    // const cipher = createCipheriv(
+    //   'aes-128-ecb',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   Buffer.from([]),
+    // ).setAutoPadding(false);
+
+    // while ((xmlString.length + 1) % 16 !== 0) {
+    //   xmlString += '\0';
+    // }
+
+    // const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
+
+    // // const encrypted = cipher.update(xmlString);
+
+    // console.log('Encrypted length: ', encrypted.length);
+    // console.log('Raw length: ', xml.length);
+    // console.log(
+    //   'Key: ',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   '-',
+    //   this.configService.get('E_TXT_SECRET_KEY').length,
+    // );
+
+    // return encrypted;
+
+    const key = (await promisify(scrypt)(
+      this.configService.get('E_TXT_SECRET_KEY'),
+      'salt',
+      32,
+    )) as Buffer;
 
     const cipher = createCipheriv(
       'aes-128-ecb',
-      this.configService.get('E_TXT_SECRET_KEY'),
+      key,
       Buffer.from([]),
-    ).setAutoPadding(false);
+    ).setAutoPadding(true);
 
-    while ((xmlString.length + 1) % 16 !== 0) {
-      xmlString += '\0';
-    }
+    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
 
-    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    // const encrypted = cipher.update(xmlString);
-
-    console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw length: ', xml.length);
-    console.log(
-      'Key: ',
-      this.configService.get('E_TXT_SECRET_KEY'),
-      '-',
-      this.configService.get('E_TXT_SECRET_KEY').length,
-    );
-
-    return encrypted;
+    return encryptedText;
   }
 
   private decryptXmlFile(xml: Buffer): string {
