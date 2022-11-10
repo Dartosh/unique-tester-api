@@ -192,7 +192,7 @@ export class EtxtService {
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
       Buffer.from([]),
-    ).setAutoPadding(true);
+    ).setAutoPadding(false);
 
     if (xmlString.length % 16 !== 0) {
       for (let i = 0; i < xmlString.length % 16; i++) {
