@@ -221,6 +221,12 @@ export class EtxtService {
 
     // return encrypted;
 
+    let xmlString = xml;
+
+    while (xmlString.length % 16 !== 0) {
+      xmlString += '\0';
+    }
+
     const key = (await promisify(scrypt)(
       this.configService.get('E_TXT_SECRET_KEY'),
       'salt',
@@ -231,9 +237,12 @@ export class EtxtService {
       'aes-128-ecb',
       key,
       Buffer.from([]),
-    ).setAutoPadding(true);
+    ).setAutoPadding(false);
 
-    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
+    const encryptedText = Buffer.concat([
+      cipher.update(xmlString),
+      cipher.final(),
+    ]);
 
     return encryptedText;
   }
