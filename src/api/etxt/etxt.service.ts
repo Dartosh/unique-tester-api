@@ -186,7 +186,7 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
-    // let xmlString = xml;
+    let xmlString = xml;
 
     const cipher = createCipheriv(
       'aes-128-ecb',
@@ -194,13 +194,13 @@ export class EtxtService {
       Buffer.from([]),
     ).setAutoPadding(true);
 
-    // if (xmlString.length % 16 !== 0) {
-    //   for (let i = 0; i < xmlString.length % 16; i++) {
-    //     xmlString += '\0';
-    //   }
-    // }
+    if (xmlString.length % 16 !== 0) {
+      for (let i = 0; i < xmlString.length % 16; i++) {
+        xmlString += '\0';
+      }
+    }
 
-    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(xml) /*, cipher.final()*/]);
 
     console.log('Encrypted length: ', encrypted.length);
     console.log('Raw length: ', xml.length);
