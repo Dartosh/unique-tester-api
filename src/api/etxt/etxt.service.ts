@@ -192,7 +192,7 @@ export class EtxtService {
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
       Buffer.from([]),
-    ).setAutoPadding(true);
+    );
 
     // if (xmlString.length % 16 !== 0) {
     //   for (let i = 0; i < xmlString.length % 16; i++) {
@@ -200,7 +200,7 @@ export class EtxtService {
     //   }
     // }
 
-    const encrypted = Buffer.concat([cipher.update(xml) /*, cipher.final()*/]);
+    const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     console.log('Encrypted length: ', encrypted.length);
     console.log('Raw length: ', xml.length);
