@@ -102,7 +102,7 @@ export class EtxtService {
 
     // const iv = randomBytes(16);
 
-    const encryptedXml = await this.encryptXmlFile(resultXml);
+    const encryptedXml = this.encryptXmlFile(resultXml);
 
     // const decryptedXml = this.decryptXmlFile(encryptedXml);
 
@@ -194,7 +194,7 @@ export class EtxtService {
     }
   }
 
-  private async encryptXmlFile(xml: string): Promise<Buffer> {
+  private encryptXmlFile(xml: string): Buffer {
     // let xmlString = xml.replace('\n', '');
 
     // const cipher = createCipheriv(
@@ -222,7 +222,7 @@ export class EtxtService {
 
     // return encrypted;
 
-    const xmlString = minifyXml.minify(xml);
+    // const xmlString = minifyXml.minify(xml);
 
     // while (xmlString.length % 16 !== 0) {
     //   // eslint-disable-next-line prettier/prettier
@@ -241,13 +241,10 @@ export class EtxtService {
       Buffer.from([]),
     ).setAutoPadding(true);
 
-    const encryptedText = Buffer.concat([
-      cipher.update(xmlString),
-      cipher.final(),
-    ]);
+    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
 
     console.log('Encrypted length: ', encryptedText.length);
-    console.log('Raw length: ', xmlString.length);
+    console.log('Raw length: ', xml.length);
     console.log(
       'Key: ',
       this.configService.get('E_TXT_SECRET_KEY'),
