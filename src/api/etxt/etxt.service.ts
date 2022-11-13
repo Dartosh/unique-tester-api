@@ -5,12 +5,11 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as uid from 'uid';
-import { createCipheriv, createDecipheriv, scrypt } from 'crypto';
-import { promisify } from 'util';
+import { createCipheriv, createDecipheriv } from 'crypto';
 import { URLSearchParams } from 'url';
 import { lastValueFrom } from 'rxjs';
-import * as minifyXml from 'minify-xml';
 import * as xmlbuilder from 'xmlbuilder';
+import * as runner from 'child_process';
 
 import { PrismaService } from 'src/modules/db';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
@@ -33,6 +32,11 @@ export class EtxtService {
     version: '1.0',
     encoding: 'UTF-8',
   };
+
+  private readonly PHP_SCRIPT_PATH = path.join(
+    __dirname,
+    '../../../encrypt.php',
+  );
 
   private readonly E_TXT_URL = `http://${this.configService.get(
     'E_TXT_HOST',
@@ -100,40 +104,14 @@ export class EtxtService {
 
     const resultXml = root.end({ pretty: true });
 
-    // const iv = randomBytes(16);
-
     const encryptedXml = this.encryptXmlFile(resultXml);
-
-    // const decryptedXml = this.decryptXmlFile(encryptedXml);
 
     const fileName = uid.uid(16);
 
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
-      'binary',
     );
-
-    // fs.writeFileSync(
-    //   path.join(__dirname, '../..', FILE_DESTINATION, `d-${fileName}.txt`),
-    //   decryptedXml,
-    // );
-
-    // const wstream = fs.createWriteStream(
-    //   path.join(__dirname, '../../..', FILE_DESTINATION, `${fileName}`),
-    //   {
-    //     encoding: 'binary',
-    //   },
-    // );
-
-    // wstream.write(encryptedXml, 'binary');
-
-    // wstream.end();
-
-    // fs.writeFileSync(
-    //   path.join(__dirname, '..', '..', FILE_DESTINATION, `encoded.xml`),
-    //   encryptedXml,
-    // );
 
     const params = new URLSearchParams({
       xmlUrl: this.getFileUrl(fileName),
@@ -195,46 +173,6 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
-    // let xmlString = xml.replace('\n', '');
-
-    // const cipher = createCipheriv(
-    //   'aes-128-ecb',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   Buffer.from([]),
-    // ).setAutoPadding(false);
-
-    // while ((xmlString.length + 1) % 16 !== 0) {
-    //   xmlString += '\0';
-    // }
-
-    // const encrypted = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    // // const encrypted = cipher.update(xmlString);
-
-    // console.log('Encrypted length: ', encrypted.length);
-    // console.log('Raw length: ', xml.length);
-    // console.log(
-    //   'Key: ',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   '-',
-    //   this.configService.get('E_TXT_SECRET_KEY').length,
-    // );
-
-    // return encrypted;
-
-    // const xmlString = minifyXml.minify(xml);
-
-    // while (xmlString.length % 16 !== 0) {
-    //   // eslint-disable-next-line prettier/prettier
-    //   xmlString += /\cC/;
-    // }
-
-    // const key = (await promisify(scrypt)(
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   'salt',
-    //   16,
-    // )) as Buffer;
-
     const cipher = createCipheriv(
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
