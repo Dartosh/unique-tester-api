@@ -108,9 +108,16 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    fs.writeFileSync(
+    fs.writeFile(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
+      (error: any) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('File was written!');
+        }
+      },
     );
 
     const params = new URLSearchParams({
