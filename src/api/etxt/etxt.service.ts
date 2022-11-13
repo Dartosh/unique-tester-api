@@ -9,6 +9,7 @@ import { createCipheriv, createDecipheriv, scrypt } from 'crypto';
 import { promisify } from 'util';
 import { URLSearchParams } from 'url';
 import { lastValueFrom } from 'rxjs';
+import * as minifyXml from 'minify-xml';
 import * as xmlbuilder from 'xmlbuilder';
 
 import { PrismaService } from 'src/modules/db';
@@ -221,22 +222,22 @@ export class EtxtService {
 
     // return encrypted;
 
-    let xmlString = xml;
+    const xmlString = minifyXml.minify(xml);
 
-    while (xmlString.length % 16 !== 0) {
-      // eslint-disable-next-line prettier/prettier
-      xmlString += /\cC/;
-    }
+    // while (xmlString.length % 16 !== 0) {
+    //   // eslint-disable-next-line prettier/prettier
+    //   xmlString += /\cC/;
+    // }
 
-    const key = (await promisify(scrypt)(
-      this.configService.get('E_TXT_SECRET_KEY'),
-      'salt',
-      16,
-    )) as Buffer;
+    // const key = (await promisify(scrypt)(
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   'salt',
+    //   16,
+    // )) as Buffer;
 
     const cipher = createCipheriv(
       'aes-128-ecb',
-      key,
+      this.configService.get('E_TXT_SECRET_KEY'),
       Buffer.from([]),
     ).setAutoPadding(true);
 

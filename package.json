@@ -35,6 +35,7 @@
     "express-xml-bodyparser": "^0.3.0",
     "google-spreadsheet": "^3.3.0",
     "googleapis": "^108.0.0",
+    "minify-xml": "^3.4.0",
     "qs": "^6.11.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
