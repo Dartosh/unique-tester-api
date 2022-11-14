@@ -106,6 +106,7 @@ export class EtxtService {
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
+      'binary',
     );
 
     const params = new URLSearchParams({
@@ -167,8 +168,10 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): string {
+  private encryptXmlFile(xml: string): Buffer {
     let text = Buffer.from(xml, 'utf8').toString();
+
+    console.log('text:\n', text);
 
     const cipher = createCipheriv(
       'aes-128-ecb',
@@ -185,9 +188,7 @@ export class EtxtService {
 
     cipher.setAutoPadding(false);
 
-    return Buffer.concat([cipher.update(text), cipher.final()]).toString(
-      'binary',
-    );
+    return Buffer.concat([cipher.update(text), cipher.final()]);
   }
 
   public decryptXmlFile(xml: any) {
