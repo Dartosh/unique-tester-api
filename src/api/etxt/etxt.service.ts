@@ -180,27 +180,46 @@ export class EtxtService {
   }
 
   private encryptXmlFile(xml: string): Buffer {
+    // const cipher = createCipheriv(
+    //   'aes-128-ecb',
+    //   String(this.configService.get('E_TXT_SECRET_KEY')),
+    //   Buffer.from([]),
+    // ).setAutoPadding(true);
+
+    // const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
+
+    // console.log('Encrypted length: ', encryptedText.length);
+    // console.log('Raw length: ', xml.length);
+    // console.log(
+    //   'Key: ',
+    //   this.configService.get('E_TXT_SECRET_KEY'),
+    //   '-',
+    //   this.configService.get('E_TXT_SECRET_KEY').length,
+    // );
+
+    // return encryptedText;
+
+    let text = xml;
+
     const cipher = createCipheriv(
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
-      Buffer.from([]),
-    ).setAutoPadding(true);
-
-    const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    console.log('Encrypted length: ', encryptedText.length);
-    console.log('Raw length: ', xml.length);
-    console.log(
-      'Key: ',
-      this.configService.get('E_TXT_SECRET_KEY'),
-      '-',
-      this.configService.get('E_TXT_SECRET_KEY').length,
+      Buffer.alloc(0),
     );
 
-    return encryptedText;
+    // длина строки должна быть кратна 16, дополняем строку символами "\0" до достижения нужной длины (вручную это делаем)
+    const strLength = Buffer.byteLength(text, 'utf8');
+
+    const padLength = strLength % 16 == 0 ? 0 : 16 - (strLength % 16);
+
+    text = text + ''.padEnd(padLength, '\0');
+
+    cipher.setAutoPadding(false);
+
+    return Buffer.concat([cipher.update(text), cipher.final()]);
   }
 
-  private decryptXmlFile(xml: Buffer): string {
+  public decryptXmlFile(xml: any) {
     const decipher = createDecipheriv(
       'aes-128-ecb',
       this.configService.get('E_TXT_SECRET_KEY'),
@@ -212,7 +231,9 @@ export class EtxtService {
       decipher.final(),
     ]).toString('utf8');
 
-    return decrypted;
+    console.log(decrypted);
+
+    // return decrypted;
   }
 
   private customPadding(str: string, blockSize: number, padder: any) {
