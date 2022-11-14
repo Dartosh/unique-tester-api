@@ -103,8 +103,6 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    console.log('binary xml: ', encryptedXml.toString('binary'));
-
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
