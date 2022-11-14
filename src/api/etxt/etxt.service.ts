@@ -103,9 +103,20 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
+    console.log(
+      'encrypted: ',
+      encryptedXml
+        .toJSON()
+        .data.map((byte) => (byte >>> 0).toString(2))
+        .join(' '),
+    );
+
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-      encryptedXml.toString('binary'),
+      encryptedXml
+        .toJSON()
+        .data.map((byte) => (byte >>> 0).toString(2))
+        .join(' '),
     );
 
     const params = new URLSearchParams({
