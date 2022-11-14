@@ -105,8 +105,8 @@ export class EtxtService {
 
     fs.writeFile(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-      encryptedXml.toString('binary'),
-      (err) => {
+      encryptedXml,
+      (err: any) => {
         if (err) {
           console.log('Error on writing file: ', err);
         } else {
