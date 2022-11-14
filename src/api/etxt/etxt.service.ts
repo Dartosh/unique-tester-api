@@ -116,6 +116,7 @@ export class EtxtService {
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml.toString('binary'),
+      'binary',
     );
 
     const params = new URLSearchParams({
