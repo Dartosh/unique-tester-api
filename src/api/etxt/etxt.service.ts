@@ -103,9 +103,11 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    fs.writeFileSync(
+    fs.writeFile(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-      encryptedXml,
+      encryptedXml.toString('binary'),
+      'binary',
+      (err) => console.log('Error on writing file: ', err),
     );
 
     const params = new URLSearchParams({
@@ -187,7 +189,13 @@ export class EtxtService {
 
     cipher.setAutoPadding(false);
 
-    return Buffer.concat([cipher.update(text), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+
+    console.log('Encrypted length: ', encrypted.length);
+    console.log('Raw (after padding) length: ', text.length);
+    console.log('Raw (before padding) length: ', xml.length);
+
+    return encrypted;
   }
 
   public decryptXmlFile(xml: any) {
