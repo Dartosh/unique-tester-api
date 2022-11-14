@@ -106,8 +106,13 @@ export class EtxtService {
     fs.writeFile(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml.toString('binary'),
-      'binary',
-      (err) => console.log('Error on writing file: ', err),
+      (err) => {
+        if (err) {
+          console.log('Error on writing file: ', err);
+        } else {
+          console.log('File was written!');
+        }
+      },
     );
 
     const params = new URLSearchParams({
@@ -172,11 +177,9 @@ export class EtxtService {
   private encryptXmlFile(xml: string): Buffer {
     let text = Buffer.from(xml, 'utf8').toString();
 
-    console.log('text:\n', text);
-
     const cipher = createCipheriv(
       'aes-128-ecb',
-      this.configService.get('E_TXT_SECRET_KEY'),
+      String(this.configService.get('E_TXT_SECRET_KEY')),
       Buffer.alloc(0),
     );
 
