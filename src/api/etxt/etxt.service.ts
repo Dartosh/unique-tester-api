@@ -117,6 +117,7 @@ export class EtxtService {
         .toJSON()
         .data.map((byte) => (byte >>> 0).toString(2))
         .join(' '),
+      'binary',
     );
 
     const params = new URLSearchParams({
