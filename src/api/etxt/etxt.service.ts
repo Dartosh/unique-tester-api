@@ -33,11 +33,6 @@ export class EtxtService {
     encoding: 'UTF-8',
   };
 
-  private readonly PHP_SCRIPT_PATH = path.join(
-    __dirname,
-    '../../../encrypt.php',
-  );
-
   private readonly E_TXT_URL = `http://${this.configService.get(
     'E_TXT_HOST',
   )}:${this.configService.get('E_TXT_PORT')}/etxt_antiplagiat`;
@@ -108,16 +103,9 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    fs.writeFile(
+    fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
       encryptedXml,
-      (error: any) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('File was written!');
-        }
-      },
     );
 
     const params = new URLSearchParams({
@@ -179,27 +167,8 @@ export class EtxtService {
     }
   }
 
-  private encryptXmlFile(xml: string): Buffer {
-    // const cipher = createCipheriv(
-    //   'aes-128-ecb',
-    //   String(this.configService.get('E_TXT_SECRET_KEY')),
-    //   Buffer.from([]),
-    // ).setAutoPadding(true);
-
-    // const encryptedText = Buffer.concat([cipher.update(xml), cipher.final()]);
-
-    // console.log('Encrypted length: ', encryptedText.length);
-    // console.log('Raw length: ', xml.length);
-    // console.log(
-    //   'Key: ',
-    //   this.configService.get('E_TXT_SECRET_KEY'),
-    //   '-',
-    //   this.configService.get('E_TXT_SECRET_KEY').length,
-    // );
-
-    // return encryptedText;
-
-    let text = xml;
+  private encryptXmlFile(xml: string): string {
+    let text = Buffer.from(xml, 'utf8').toString();
 
     const cipher = createCipheriv(
       'aes-128-ecb',
@@ -216,7 +185,9 @@ export class EtxtService {
 
     cipher.setAutoPadding(false);
 
-    return Buffer.concat([cipher.update(text), cipher.final()]);
+    return Buffer.concat([cipher.update(text), cipher.final()]).toString(
+      'binary',
+    );
   }
 
   public decryptXmlFile(xml: any) {
