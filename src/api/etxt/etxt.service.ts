@@ -105,17 +105,9 @@ export class EtxtService {
 
     console.log('binary xml: ', encryptedXml.toString('binary'));
 
-    fs.writeFile(
+    fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-      encryptedXml.toJSON().data.join(' '),
-      'binary',
-      (err: any) => {
-        if (err) {
-          console.log('Error on writing file: ', err);
-        } else {
-          console.log('File was written!');
-        }
-      },
+      encryptedXml,
     );
 
     const params = new URLSearchParams({
