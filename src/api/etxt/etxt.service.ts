@@ -103,21 +103,19 @@ export class EtxtService {
 
     const fileName = uid.uid(16);
 
-    console.log(
-      'encrypted: ',
-      encryptedXml
-        .toJSON()
-        .data.map((byte) => (byte >>> 0).toString(2))
-        .join(' '),
-    );
+    // console.log(
+    //   'encrypted: ',
+    //   encryptedXml
+    //     .toJSON()
+    //     .data.map((byte) => (byte >>> 0).toString(2))
+    //     .join(' '),
+    // );
+
+    //try to string and binary writting
 
     fs.writeFileSync(
       path.join(__dirname, '../..', FILE_DESTINATION, `${fileName}`),
-      encryptedXml
-        .toJSON()
-        .data.map((byte) => (byte >>> 0).toString(2))
-        .join(' '),
-      'binary',
+      encryptedXml,
     );
 
     const params = new URLSearchParams({
