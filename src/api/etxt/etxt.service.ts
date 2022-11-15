@@ -170,7 +170,7 @@ export class EtxtService {
 
       entry.ele('id', savedETxtResult.id);
 
-      entry.ele('name', document.documentTitle);
+      entry.ele('name', this.encodeTextToBase64(document.documentTitle));
 
       entry.ele('text', this.encodeTextToBase64(document.text));
     } catch (error) {
