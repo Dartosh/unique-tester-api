@@ -161,8 +161,6 @@ export class EtxtService {
           throw error;
         }
 
-        console.log(result.root.entry[0].ftext[0].$.uniq);
-
         result?.root?.entry?.forEach((entry) => {
           documentsResults.push(entry);
         });
@@ -170,11 +168,9 @@ export class EtxtService {
     );
 
     const documentsPromises = documentsResults.map(async (documentResult) => {
-      console.log(documentResult.id, documentResult.ftext[0].$.uniq);
-
       await this.db.eTxtResult.update({
         where: {
-          uid: documentResult.id,
+          uid: documentResult.id[0],
         },
         data: {
           jsonResponse: JSON.stringify(documentResult),
