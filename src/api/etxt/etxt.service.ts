@@ -9,7 +9,6 @@ import { createCipheriv, createDecipheriv } from 'crypto';
 import { URLSearchParams } from 'url';
 import { lastValueFrom } from 'rxjs';
 import * as xmlbuilder from 'xmlbuilder';
-import * as runner from 'child_process';
 
 import { PrismaService } from 'src/modules/db';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
@@ -17,6 +16,7 @@ import { GoogleService } from '../google/google.service';
 import { TextRuService } from '../text-ru/text-ru.service';
 import { GoogleDocumentMetadataInterface } from '../google/interfaces/google-doc-metadata.interface';
 import { FILE_DESTINATION } from 'src/constants/e-txt.constants';
+import { TextRuFileResultDto } from './dto/e-txt-result.dto';
 
 @Injectable()
 export class EtxtService {
@@ -145,6 +145,12 @@ export class EtxtService {
     return fileName;
   }
 
+  public async saveETxtResults(props: TextRuFileResultDto): Promise<void> {
+    const decrypted = this.decryptXmlFile(props.Xml);
+
+    console.log(decrypted);
+  }
+
   private async configureAndSaveETxtResult(
     documentId: string,
     documentsXmlBody: xmlbuilder.XMLElement,
@@ -205,21 +211,21 @@ export class EtxtService {
     return encrypted;
   }
 
-  public decryptXmlFile(xml: any) {
+  public decryptXmlFile(text: string) {
+    const formattedText = text.replace(' ', '+');
+
+    const bufferText = Buffer.from(formattedText, 'base64');
+
     const decipher = createDecipheriv(
       'aes-128-ecb',
-      this.configService.get('E_TXT_SECRET_KEY'),
-      Buffer.from([]),
-    );
+      String(this.configService.get('E_TXT_SECRET_KEY')),
+      Buffer.alloc(0),
+    ).setAutoPadding(false);
 
-    const decrypted = Buffer.concat([
-      decipher.update(xml),
+    return Buffer.concat([
+      decipher.update(bufferText),
       decipher.final(),
     ]).toString('utf8');
-
-    console.log(decrypted);
-
-    // return decrypted;
   }
 
   private customPadding(str: string, blockSize: number, padder: any) {
