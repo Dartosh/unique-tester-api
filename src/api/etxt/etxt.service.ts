@@ -9,6 +9,7 @@ import { createCipheriv, createDecipheriv } from 'crypto';
 import { URLSearchParams } from 'url';
 import { lastValueFrom } from 'rxjs';
 import * as xmlbuilder from 'xmlbuilder';
+import * as xml2js from 'xml2js';
 
 import { PrismaService } from 'src/modules/db';
 import { SpreadSheetDataDto } from '../google/dto/spreadsheet-data.dto';
@@ -17,6 +18,10 @@ import { TextRuService } from '../text-ru/text-ru.service';
 import { GoogleDocumentMetadataInterface } from '../google/interfaces/google-doc-metadata.interface';
 import { FILE_DESTINATION } from 'src/constants/e-txt.constants';
 import { TextRuFileResultDto } from './dto/e-txt-result.dto';
+import {
+  EntryType,
+  ETxtResultsObjectType,
+} from './interfaces/etxt-results-object.interface';
 
 @Injectable()
 export class EtxtService {
@@ -135,9 +140,8 @@ export class EtxtService {
     );
 
     try {
-      const response = await lastValueFrom(eTxtRequest);
-
-      console.log('response:\n', response?.data);
+      await lastValueFrom(eTxtRequest);
+      // console.log('response:\n', response?.data);
     } catch (error) {
       console.log('error:\n', error);
     }
@@ -148,7 +152,34 @@ export class EtxtService {
   public async saveETxtResults(props: TextRuFileResultDto): Promise<void> {
     const decrypted = this.decryptXmlFile(props.Xml);
 
-    console.log(decrypted);
+    const documentsResults: EntryType[] = [];
+
+    new xml2js.parseString(
+      decrypted,
+      (error: Error, result: ETxtResultsObjectType) => {
+        if (error) {
+          throw error;
+        }
+
+        result.root.entry.forEach((entry) => {
+          documentsResults.push(entry);
+        });
+      },
+    );
+
+    const documentsPromises = documentsResults.map(async (documentResult) => {
+      await this.db.eTxtResult.update({
+        where: {
+          uid: documentResult.id,
+        },
+        data: {
+          jsonResponse: JSON.stringify(documentResult),
+          textUnique: +documentResult.ftext[0].$.uniq,
+        },
+      });
+    });
+
+    Promise.allSettled(documentsPromises);
   }
 
   private async configureAndSaveETxtResult(
@@ -161,20 +192,19 @@ export class EtxtService {
         where: {
           documentId,
         },
-        update: {
-          documentId,
-        },
+        update: undefined,
         create: {
           documentId,
+          uid: uid.uid(16),
         },
         select: {
-          id: true,
+          uid: true,
         },
       });
 
       const entry = documentsXmlBody.ele('entry');
 
-      entry.ele('id', savedETxtResult.id);
+      entry.ele('id', savedETxtResult.uid);
 
       entry.ele('name', this.encodeTextToBase64(document.documentTitle));
 
@@ -204,17 +234,20 @@ export class EtxtService {
 
     const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
 
-    console.log('Encrypted length: ', encrypted.length);
-    console.log('Raw (after padding) length: ', text.length);
-    console.log('Raw (before padding) length: ', xml.length);
-
     return encrypted;
   }
 
   public decryptXmlFile(text: string) {
-    const formattedText = text.replace(' ', '+');
+    const formattedText = text.replace(/ /g, '+');
 
-    const bufferText = Buffer.from(formattedText, 'base64');
+    const bufferString = Buffer.from(formattedText, 'base64');
+
+    // console.log('formattedText:\n', formattedText);
+
+    // const bufferText = Buffer.from(
+    //   Buffer.from(formattedText, 'base64').toString('base64'),
+    //   'binary',
+    // );
 
     const decipher = createDecipheriv(
       'aes-128-ecb',
@@ -223,7 +256,7 @@ export class EtxtService {
     ).setAutoPadding(false);
 
     return Buffer.concat([
-      decipher.update(bufferText),
+      decipher.update(bufferString),
       decipher.final(),
     ]).toString('utf8');
   }

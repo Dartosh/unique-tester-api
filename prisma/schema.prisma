@@ -90,8 +90,6 @@ model Document {
 
 model TextRuResult {
   uid        String   @unique
-  name       String?
-  text       String?
   wordsCount Int?     @map("words_count")
   jsonResult Json?    @map("json_result")
   spellCheck Json?    @map("spell_check")
@@ -104,13 +102,11 @@ model TextRuResult {
 }
 
 model ETxtResult {
-  id           Int      @id @default(autoincrement())
-  name         String?
-  text         String?
+  uid          String   @unique
   jsonResponse Json?    @map("json_response")
   textUnique   Float?
   document     Document @relation(fields: [documentId], references: [documentGoogleId], onDelete: Cascade)
-  documentId   String   @unique @map("text_ru_result_uid")
+  documentId   String   @unique @map("document_id")
 
   @@map("e_txt_results")
 }

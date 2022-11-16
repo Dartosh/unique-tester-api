@@ -182,6 +182,7 @@ export class GoogleService {
         documents: {
           select: {
             textRuResultResponse: true,
+            eTxtResultResponse: true,
             checkStatus: true,
             checkStatusCoords: {
               select: {
@@ -230,7 +231,7 @@ export class GoogleService {
 
         updatedSpreadsheetTableValues[document.eTextResultCoords.yCoord][
           document.eTextResultCoords.xCoord
-        ] = document?.eTextResult || '';
+        ] = document?.eTxtResultResponse?.textUnique || '';
 
         updatedSpreadsheetTableValues[document.textRuResultCoords.yCoord][
           document.textRuResultCoords.xCoord
