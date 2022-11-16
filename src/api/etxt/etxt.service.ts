@@ -161,7 +161,7 @@ export class EtxtService {
           throw error;
         }
 
-        console.log(result.root.entry);
+        console.log(JSON.stringify(result.root.entry[0]));
 
         result?.root?.entry?.forEach((entry) => {
           documentsResults.push(entry);
