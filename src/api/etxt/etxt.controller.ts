@@ -25,18 +25,11 @@ export class EtxtController {
   public async saveETxtResults(
     @Body() props: TextRuFileResultDto,
   ): Promise<string> {
-    console.log(props);
+    console.log(`POST /e-txt/text/save, xmlFileName: `, props.XmlFileName);
 
     try {
       await this.etxtService.saveETxtResults(props);
     } catch {}
-
-    return 'ok';
-  }
-
-  @Get('text/save')
-  public getSaveETxtResults(@Req() req: any): string {
-    console.log('saveRequest:\n', req);
 
     return 'ok';
   }
@@ -46,7 +39,7 @@ export class EtxtController {
     @Param('filepath') filepath: string,
     @Res() res: any,
   ): any {
-    console.log(`GET /text/${filepath}`);
+    console.log(`GET /e-txt/text/${filepath}`);
 
     const file = fs.createReadStream(
       path.join(__dirname, '../..', FILE_DESTINATION, `${filepath}`),
