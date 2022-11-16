@@ -170,6 +170,8 @@ export class EtxtService {
     );
 
     const documentsPromises = documentsResults.map(async (documentResult) => {
+      console.log(documentResult.id, documentResult.ftext[0].$.uniq);
+
       await this.db.eTxtResult.update({
         where: {
           uid: documentResult.id,
@@ -181,7 +183,7 @@ export class EtxtService {
       });
     });
 
-    Promise.allSettled(documentsPromises);
+    await Promise.allSettled(documentsPromises);
   }
 
   private async configureAndSaveETxtResult(
