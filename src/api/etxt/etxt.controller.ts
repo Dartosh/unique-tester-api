@@ -27,7 +27,9 @@ export class EtxtController {
   ): Promise<string> {
     console.log(props);
 
-    await this.etxtService.saveETxtResults(props);
+    try {
+      await this.etxtService.saveETxtResults(props);
+    } catch {}
 
     return 'ok';
   }

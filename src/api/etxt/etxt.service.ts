@@ -161,7 +161,7 @@ export class EtxtService {
           throw error;
         }
 
-        result.root.entry.forEach((entry) => {
+        result?.root?.entry?.forEach((entry) => {
           documentsResults.push(entry);
         });
       },
@@ -192,7 +192,9 @@ export class EtxtService {
         where: {
           documentId,
         },
-        update: undefined,
+        update: {
+          documentId,
+        },
         create: {
           documentId,
           uid: uid.uid(16),
