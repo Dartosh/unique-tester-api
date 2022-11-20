@@ -54,7 +54,7 @@ export class GoogleSpreadsheetBuilder implements GoogleSheetInterface {
   ): GoogleDocumentMetadataInterface[] {
     const counter = {
       from: 1,
-      to: 10,
+      to: 5,
     };
 
     if (from && to) {
