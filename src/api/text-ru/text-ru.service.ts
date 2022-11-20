@@ -15,6 +15,8 @@ import { TextRuFile } from './classes/text-ru-file.class';
 import { TextRuFileResultDto } from './dto/text-ru-file-result.dto';
 import { TextRuFileUidResponseInterface } from './interfaces/responses/text-ru-file-uid-res.interface';
 import { TextRuFileInterface } from './interfaces/text-ru-file.interface';
+import { LoggerService } from '../logger/logger.service';
+import { LogTypesEnum } from '../logger/enums/log-types.enum';
 
 @Injectable()
 export class TextRuService {
@@ -22,6 +24,7 @@ export class TextRuService {
     private readonly db: PrismaService,
     private readonly httpService: HttpService,
     private readonly googleService: GoogleService,
+    private readonly loggerService: LoggerService,
   ) {}
 
   private readonly UPLOAD_FILE_URL = 'http://api.text.ru/post';
@@ -325,6 +328,12 @@ export class TextRuService {
 
     await Promise.allSettled(documentsPromises);
 
+    this.loggerService.addNewLog(
+      'Text.ru',
+      `Запрос на проверку текстов успешно отправлен.`,
+      LogTypesEnum.success,
+    );
+
     return {
       massage: 'OK',
     };
@@ -378,7 +387,7 @@ export class TextRuService {
 
   public async saveFilesResults(props: TextRuFileResultDto): Promise<void> {
     try {
-      await this.db.textRuResult.update({
+      const result = await this.db.textRuResult.update({
         where: {
           uid: props.uid,
         },
@@ -388,9 +397,28 @@ export class TextRuService {
           spellCheck: JSON.stringify(props.spell_check.replace('\\', '')),
           jsonResult: JSON.stringify(props.json_result.replace('\\', '')),
         },
+        select: {
+          document: {
+            select: {
+              documentTitle: true,
+            },
+          },
+        },
       });
+
+      this.loggerService.addNewLog(
+        'Text.ru',
+        `Результат текста ${result.document.documentTitle} получен.`,
+        LogTypesEnum.info,
+      );
     } catch (error) {
       console.log('TextRuSaveResultsError: ', error);
+
+      this.loggerService.addNewLog(
+        'Ошибка Text.ru',
+        `Произошла ошибка при получении результата проверки текста.`,
+        LogTypesEnum.error,
+      );
 
       throw new BadRequestException(
         'Произошла ошибка при получении результата проверки текста',

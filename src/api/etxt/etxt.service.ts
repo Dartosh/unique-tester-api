@@ -22,6 +22,8 @@ import {
   EntryType,
   ETxtResultsObjectType,
 } from './interfaces/etxt-results-object.interface';
+import { LogTypesEnum } from '../logger/enums/log-types.enum';
+import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
 export class EtxtService {
@@ -31,6 +33,7 @@ export class EtxtService {
     private readonly googleService: GoogleService,
     private readonly textRuService: TextRuService,
     private readonly configService: ConfigService,
+    private readonly loggerService: LoggerService,
   ) {}
 
   private readonly XML_OPTIONS = {
@@ -141,8 +144,20 @@ export class EtxtService {
 
     try {
       await lastValueFrom(eTxtRequest);
+
+      this.loggerService.addNewLog(
+        'E-txt.ru',
+        `Запрос на проверку пакета документов успешно отправлен.`,
+        LogTypesEnum.success,
+      );
       // console.log('response:\n', response?.data);
     } catch (error) {
+      this.loggerService.addNewLog(
+        'Ошибка E-txt.ru',
+        `Произошла ошибка при попытке отправки пакета документов на проверку.`,
+        LogTypesEnum.error,
+      );
+
       console.log('error:\n', error);
     }
 
@@ -150,36 +165,52 @@ export class EtxtService {
   }
 
   public async saveETxtResults(props: TextRuFileResultDto): Promise<void> {
-    const decrypted = this.decryptXmlFile(props.Xml);
+    try {
+      const decrypted = this.decryptXmlFile(props.Xml);
 
-    const documentsResults: EntryType[] = [];
+      const documentsResults: EntryType[] = [];
 
-    new xml2js.parseString(
-      decrypted,
-      (error: Error, result: ETxtResultsObjectType) => {
-        if (error) {
-          throw error;
-        }
+      new xml2js.parseString(
+        decrypted,
+        (error: Error, result: ETxtResultsObjectType) => {
+          if (error) {
+            throw error;
+          }
 
-        result?.root?.entry?.forEach((entry) => {
-          documentsResults.push(entry);
+          result?.root?.entry?.forEach((entry) => {
+            documentsResults.push(entry);
+          });
+        },
+      );
+
+      const documentsPromises = documentsResults.map(async (documentResult) => {
+        await this.db.eTxtResult.update({
+          where: {
+            uid: documentResult.id[0],
+          },
+          data: {
+            jsonResponse: JSON.stringify(documentResult),
+            textUnique: +documentResult.ftext[0].$.uniq,
+          },
         });
-      },
-    );
-
-    const documentsPromises = documentsResults.map(async (documentResult) => {
-      await this.db.eTxtResult.update({
-        where: {
-          uid: documentResult.id[0],
-        },
-        data: {
-          jsonResponse: JSON.stringify(documentResult),
-          textUnique: +documentResult.ftext[0].$.uniq,
-        },
       });
-    });
 
-    await Promise.allSettled(documentsPromises);
+      await Promise.allSettled(documentsPromises);
+
+      this.loggerService.addNewLog(
+        'E-txt.ru',
+        `Результаты проверки успешно получены.`,
+        LogTypesEnum.info,
+      );
+    } catch (error) {
+      console.log('saveEtxtResultError:\n', error);
+
+      this.loggerService.addNewLog(
+        'Ошибка E-txt.ru',
+        `Произошла ошибка при получении результата проверки пакета текстов.`,
+        LogTypesEnum.error,
+      );
+    }
   }
 
   private async configureAndSaveETxtResult(

@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { PrismaService } from 'src/modules/db';
@@ -15,6 +14,8 @@ import { GoogleSheetHeaderInterface } from './interfaces/google-sheet-structure.
 import { GoogleSheetHeaderTypeEnum } from './enum/google-sheet-header-type.enum';
 import { GoogleSpreadsheetBuilder } from './classes/spreadsheet-builder.class';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { LoggerService } from '../logger/logger.service';
+import { LogTypesEnum } from '../logger/enums/log-types.enum';
 
 @Injectable()
 export class GoogleService {
@@ -25,7 +26,7 @@ export class GoogleService {
 
   constructor(
     private readonly db: PrismaService,
-    private readonly httpService: HttpService,
+    private readonly loggerService: LoggerService,
   ) {
     this.googleApis = googleConfiguration.getGoogleApis();
     this.googleAuth = googleConfiguration.getGoogleAuth();
@@ -242,26 +243,32 @@ export class GoogleService {
         ] = document?.wordsCountValue || '';
       });
 
-      const updateTableResult =
-        await this.googleSheets.spreadsheets.values.batchUpdate({
-          spreadsheetId: props.spreadsheetId,
-          requestBody: {
-            data: [
-              {
-                range: props.rangeSheetTitle,
-                values: updatedSpreadsheetTableValues,
-              },
-            ],
-            valueInputOption: 'USER_ENTERED',
-          },
-        });
+      await this.googleSheets.spreadsheets.values.batchUpdate({
+        spreadsheetId: props.spreadsheetId,
+        requestBody: {
+          data: [
+            {
+              range: props.rangeSheetTitle,
+              values: updatedSpreadsheetTableValues,
+            },
+          ],
+          valueInputOption: 'USER_ENTERED',
+        },
+      });
 
-      console.log(
-        '\n%d cells updated.',
-        updateTableResult.data.totalUpdatedCells,
+      this.loggerService.addNewLog(
+        'Google',
+        `Таблица была успешно обновлена`,
+        LogTypesEnum.success,
       );
     } catch (error) {
       console.log('GoogleUpdateSpreadsheetTableError:\n', error);
+
+      this.loggerService.addNewLog(
+        'Ошибка Google',
+        'Произошла ошибка при обновлении таблицы.',
+        LogTypesEnum.error,
+      );
 
       throw new BadRequestException(
         'Произошла ошибка при обновлении Google-таблицы, проверьте доступ к таблице.',
