@@ -25,8 +25,6 @@ export class EtxtController {
   public async saveETxtResults(
     @Body() props: TextRuFileResultDto,
   ): Promise<string> {
-    console.log(`POST /e-txt/text/save, xmlFileName: `, props.XmlFileName);
-
     try {
       await this.etxtService.saveETxtResults(props);
     } catch {}

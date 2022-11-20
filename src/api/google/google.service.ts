@@ -165,6 +165,12 @@ export class GoogleService {
     } catch (error) {
       console.log('\nGetSpreadsheetHeadersError: ', error);
 
+      this.loggerService.addNewLog(
+        'Ошибка Google',
+        'Произошла ошибка при попытке получить таблицу. Проверьте доступ к таблице.',
+        LogTypesEnum.error,
+      );
+
       throw new BadRequestException(
         'Произошла ошибка при попытке получить данные о таблице, проверьте введённые данные и права доступа таблицы.',
       );

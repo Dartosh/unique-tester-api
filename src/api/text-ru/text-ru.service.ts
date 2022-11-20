@@ -396,6 +396,11 @@ export class TextRuService {
           seoCheck: JSON.stringify(props.seo_check.replace('\\', '')),
           spellCheck: JSON.stringify(props.spell_check.replace('\\', '')),
           jsonResult: JSON.stringify(props.json_result.replace('\\', '')),
+          document: {
+            update: {
+              checkStatus: '1',
+            },
+          },
         },
         select: {
           document: {

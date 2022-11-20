@@ -71,6 +71,11 @@ export class GoogleSpreadsheetBuilder implements GoogleSheetInterface {
           : this.tableValues.length - 1;
     }
 
+    if (!from && !to) {
+      counter.from = 1;
+      counter.to = 10;
+    }
+
     const documentsToReturn: DocumentMetadata[] = [];
 
     for (let i = from; i <= to; i += 1) {
@@ -92,6 +97,10 @@ export class GoogleSpreadsheetBuilder implements GoogleSheetInterface {
         i,
         GoogleSheetHeaderTypeEnum.checkStatus,
       );
+
+      if (checkStatusCell.name !== '1') {
+        checkStatusCell.name = '0';
+      }
 
       const textRuResultCell = this.getDocumentCell(
         i,

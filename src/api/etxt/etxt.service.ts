@@ -191,6 +191,11 @@ export class EtxtService {
           data: {
             jsonResponse: JSON.stringify(documentResult),
             textUnique: +documentResult.ftext[0].$.uniq,
+            document: {
+              update: {
+                checkStatus: '1',
+              },
+            },
           },
         });
       });
