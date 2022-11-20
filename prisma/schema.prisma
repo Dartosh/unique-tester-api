@@ -110,3 +110,13 @@ model ETxtResult {
 
   @@map("e_txt_results")
 }
+
+model Log {
+  id          Int       @id @default(autoincrement())
+  receiveTime DateTime  @default(now()) @map(name: "receiveTime")
+  type        String
+  title       String
+  message     String
+
+  @@map("logs")
+}
