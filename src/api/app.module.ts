@@ -15,6 +15,8 @@ import { JsonBodyMiddleware } from 'src/middleware/json-body.middleware';
 import { UrlencodedBodyMiddleware } from 'src/middleware/urlencoded-body.middleware';
 import { EtxtModule } from './etxt/etxt.module';
 import { XmlBodyMiddleware } from 'src/middleware/xml-body.middleware';
+import { LoggerModule } from './logger/logger.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { XmlBodyMiddleware } from 'src/middleware/xml-body.middleware';
     TextRuModule,
     GoogleModule,
     EtxtModule,
+    LoggerModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
