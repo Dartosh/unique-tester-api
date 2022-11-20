@@ -61,13 +61,10 @@ export class GoogleSpreadsheetBuilder implements GoogleSheetInterface {
       counter.from =
         from > 0 && from < this.tableValues.length && from < to
           ? counter.from
-          : this.getHeaderByType(GoogleSheetHeaderTypeEnum.documentLink)
-              .yCoord + 1;
+          : 1;
 
       counter.to =
-        to > 0 && to < this.tableValues.length && to > from
-          ? counter.to
-          : this.tableValues.length - 1;
+        to > 0 && to < this.tableValues.length && to > from ? counter.to : 5;
     }
 
     const documentsToReturn: DocumentMetadata[] = [];
